@@ -1,26 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Login from "./components/Login.js"
+import Main from "./components/Main.js"
+import {Switch, Route, Link, BrowserRouter as Router, Redirect} from 'react-router-dom' ;
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  constructor(){
+    super();
+    this.state = {serverError : undefined};
+  }
+
+  handleErrors(err) {
+    if (err) {
+      if (err.status && err.status === 401) {
+        // Signal login error
+        this.setState({serverError : "You are not authenticated"});
+      }
+      else{
+        // Signal generic server error
+        this.setState({serverError : "Server error"});
+      }
+    }
+  }
+
+  render(){ return <div className="App">
+    <Router>
+      <Switch>
+
+        <Route exact path={"/login"}>
+          <Login/>
+        </Route>
+
+        <Route>
+          <Main serverError = {this.state.serverError} handleErrors = {this.handleErrors} />
+        </Route>
+
+      </Switch>
+    </Router>
+    </div>;
+  }
 }
 
 export default App;

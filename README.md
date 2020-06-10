@@ -2,13 +2,14 @@
 ## Student: s269705 Bruno Andrea 
 
 ## React client application routes
-
+<!---
 - Route `/`: page content and purpose
 - Route `/something/:param`: page content and purpose, param specification
 - ...
+-->
 
 ## REST API server
-
+<!---
 - POST `/login`
   - request parameters and request body content
   - response body content
@@ -19,29 +20,37 @@
   - request parameters and request body content
   - response body content
 - ...
+-->
 
 ## Server database
 
+<!---
 - Table `users` - contains xx yy zz
 - Table `something` - contains ww qq ss
 - ...
+-->
+
+- Table `veichles` - contains: id, category, brand, model
 
 ## Main React Components
-
+<!---
 - `ListOfSomething` (in `List.js`): component purpose and main functionality
 - `GreatButton` (in `GreatButton.js`): component purpose and main functionality
 - ...
 
 (only _main_ components, minor ones may be skipped)
+-->
 
 ## Screenshot
-
+<!---
 ![Configurator Screenshot](./img/screenshot.jpg)
+-->
 
 ## Test users
-
+<!---
 * username, password
 * username, password
 * username, password (frequent customer)
 * username, password
 * username, password (frequent customer)
+-->
