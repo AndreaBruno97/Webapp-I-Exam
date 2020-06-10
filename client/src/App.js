@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Login from "./components/Login.js"
 import Main from "./components/Main.js"
 import {Switch, Route, Link, BrowserRouter as Router, Redirect} from 'react-router-dom' ;
@@ -11,7 +10,7 @@ class App extends React.Component {
     this.state = {serverError : undefined};
   }
 
-  handleErrors(err) {
+  handleErrors = (err) => {
     if (err) {
       if (err.status && err.status === 401) {
         // Signal login error
@@ -22,7 +21,7 @@ class App extends React.Component {
         this.setState({serverError : "Server error"});
       }
     }
-  }
+  };
 
   render(){ return <div className="App">
     <Router>

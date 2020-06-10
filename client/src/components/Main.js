@@ -12,18 +12,18 @@ class Main extends React.Component {
             <Router>
                 <Switch>
 
-                   <Route exact path={"/newrental"}>
-                        <NewRental/>
+                   <Route path={"/newrental"}>
+                        <NewRental handleErrors = {this.props.handleErrors}/>
                    </Route>
 
-                    <Route exact path={"/rentals"}>
-                        <Rentals/>
+                    <Route path={"/rentals"}>
+                        <Rentals handleErrors = {this.props.handleErrors}/>
                     </Route>
-
+{/*
                     <Route exact path={"/"}>
-                        <Vehicles/>
+                        <Vehicles handleErrors = {this.props.handleErrors}/>
                     </Route>
-
+*/}             <Route path={"/"} component={Vehicles} handleErrors = {this.props.handleErrors}/>
                 </Switch>
             </Router>
 
@@ -31,7 +31,7 @@ class Main extends React.Component {
                 <Alert variant="warning">{this.props.serverError}</Alert>
             :
             ""}
-            
+
             </>;
     }
 }
