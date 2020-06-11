@@ -15,10 +15,15 @@ exports.getVehicles = function(categories, brands){
             categories = "%";
         }
         else{
-            query += `category IN (?) `;
+            query += `category IN (`;
             // Map the list separated by | into a sql list ?filter=A|B|C -> ("A","B","C")
-            let category_list = categories.split("|").map(e=>`"` + e + `"`);
-            categories = category_list.toString();
+            let category_list = categories.split("|");
+            for(let x of category_list)
+                query += '?, ';
+            //Delete the last comma
+            query = query.slice(0,-2);
+            query += ') ';
+            categories = category_list;
         }
 
         if(brands === undefined){
@@ -27,17 +32,22 @@ exports.getVehicles = function(categories, brands){
             brands = "%";
         }
         else{
-            query += `AND brand IN (?)`;
+            query += `AND brand IN (`;
             // Map the list separated by | into a sql list ?filter=A|B|C -> ("A","B","C")
-            let brand_list = brands.split("|").map(e=>`"` + e + `"`);
-            brands = brand_list.toString();
+            let brand_list = brands.split("|");
+            for(let x of brand_list)
+                query += '?, ';
+            //Delete the last comma
+            query= query.slice(0,-2);
+            query += ') ';
+            brands = brand_list;
         }
 
         console.log(query);
         console.log(categories);
         console.log(brands);
 
-        db.all(query, [categories, brands], (err, rows) => {
+        db.all(query, [...categories, ...brands], (err, rows) => {
             if (err) {
                 reject(err);
                 return;
