@@ -10,23 +10,25 @@ class Vehicles extends React.Component {
             vehicles : [],
             categories : [],
             brands : [],
-            redirected : false
         };
     }
 
-    getQuerySelectors(){
-        let queryParams="";
-        if(this.state.categories.length){
-            let queryParamsCat = "?categories=";
-            for (let cat of this.state.categories)
+    getQuerySelectors(categories, brands){
+        let queryParams="?";
+        if(categories.length){
+            let queryParamsCat = "categories=";
+            for (let cat of categories)
             queryParamsCat += cat + "|";
 
             queryParams += queryParamsCat.slice(0,-1);
         }
 
-        if(this.state.brands.length){
-            let queryParamsBr = "?brands=";
-            for (let br of this.state.brands)
+        if(brands.length){
+            if(categories.length)
+                queryParams += "&";
+
+            let queryParamsBr = "brands=";
+            for (let br of brands)
                 queryParamsBr += br + "|";
 
             queryParams += queryParamsBr.slice(0,-1);
@@ -34,12 +36,35 @@ class Vehicles extends React.Component {
         return queryParams;
     }
 
-    addFilter = (newElem, filter) => {
+    updateFilters = (elem, type, operation) => {
+        //this.setState((state)=>{
+            let tmp=[];
 
+            if(type === "categories")
+                tmp = [...this.state.categories];
+            else
+                tmp = [...this.state.brands];
+
+            if(operation==="add"){
+                if(tmp.indexOf(elem) === -1)
+                    tmp.push(elem);
+            }else{
+                if(tmp.indexOf(elem))
+                    tmp.splice(tmp.indexOf(elem), 1);
+            }
+
+           // return {type: tmp};
+        //});
+        return tmp;
     };
 
-    removeFilter = (oldElem, filter) => {
+    updateFilterState = (list, filterType) =>{
+        if(filterType === "categories")
+            this.setState({"categories": list});
+        else
+            this.setState({"brands": list});
 
+        this.updateVehiclesList();
     };
 
     componentDidMount() {
@@ -57,19 +82,28 @@ class Vehicles extends React.Component {
             newBrands = queryString.split("brands=")[1].split("categories=")[0].replace("&", "").split("|");
 
         this.setState({categories:newCategories, brands:newBrands});
+
+        this.updateVehiclesList();
     }
+
+    updateVehiclesList = () =>{
+        api.getVehicles(this.getQuerySelectors([...this.state.categories], [...this.state.brands]))
+            .then((v)=>{this.setState({vehicles: v})})
+            .catch((err)=>{this.props.handleErrors(err);});
+    };
 
 
     render() {
-        if(this.state.redirected){
-            this.setState({redirected:false})
-            return <Redirect to={"/?categories=A|E&brands=Fiat"}/>;
-        }
+        let categoriestmpAdd = this.updateFilters("E", "categories", "add");
+        let categoriestmpRemove = this.updateFilters("E", "categories", "remove");
         return <>
-            <Button onClick={ ()=>{
-                this.setState({redirected:true})
-            }}/>
+
+
+            <Link to={this.getQuerySelectors(categoriestmpAdd, [...this.state.brands])} onClick={()=>{this.updateFilterState(categoriestmpAdd, "categories")}}>Add E</Link>
+            <Link to={this.getQuerySelectors(categoriestmpRemove, [...this.state.brands])} onClick={()=>{this.updateFilterState(categoriestmpRemove, "brands")}}>Remove E</Link>
+
             <h1>VEHICLES</h1>
+            {this.state.vehicles.toString()}
             </>;
     }
 }

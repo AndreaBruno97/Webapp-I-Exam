@@ -20,7 +20,7 @@ class Main extends React.Component {
                         <Rentals handleErrors = {this.props.handleErrors}/>
                     </Route>
 
-                    <Route path={"*"} render={(props) => {
+                    <Route render={(props) => {
                         return <Vehicles handleErrors = {this.props.handleErrors} querySelectors = {props.location.search}/>;
                     }
                     }/>
