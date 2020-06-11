@@ -5,24 +5,8 @@ const baseURL = "/api";
 // GET api/vehicles
 // parameters: categories, list of elements separated by |
 //             brands, list of elements separated by |
-async function getVehicles(categories, brands) {
+async function getVehicles(querySelectors) {
         let url = "/vehicles";
-
-        if(categories.length){
-            let queryParamsCat = "?categories=";
-            for (let cat of categories)
-                queryParamsCat += cat + "|";
-
-            url += queryParamsCat.slice(0,-1);
-        }
-
-        if(brands.length){
-            let queryParamsBr = "?brands=";
-            for (let br of brands)
-                queryParamsBr += br + "|";
-
-            url += queryParamsBr.slice(0,-1);
-        }
 
         const response = await fetch(baseURL + url);
         const vehicleJson = await response.json();

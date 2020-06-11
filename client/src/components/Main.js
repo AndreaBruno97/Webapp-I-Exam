@@ -19,11 +19,12 @@ class Main extends React.Component {
                     <Route path={"/rentals"}>
                         <Rentals handleErrors = {this.props.handleErrors}/>
                     </Route>
-{/*
-                    <Route exact path={"/"}>
-                        <Vehicles handleErrors = {this.props.handleErrors}/>
-                    </Route>
-*/}             <Route path={"/"} component={Vehicles} handleErrors = {this.props.handleErrors}/>
+
+                    <Route path={"*"} render={(props) => {
+                        return <Vehicles handleErrors = {this.props.handleErrors} querySelectors = {props.location.search}/>;
+                    }
+                    }/>
+
                 </Switch>
             </Router>
 
