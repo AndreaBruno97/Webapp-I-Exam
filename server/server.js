@@ -11,11 +11,21 @@ app.use(morgan('tiny'));
 
 app.listen(PORT, ()=>console.log(`Server running on http://localhost:${PORT}/`));
 
+/*
 // GET /api/vehicles
 // Parameters: ?categories: set of categories to match, separated by |
 //             ?brands: set of brands to match, separated by |
 app.get('/api/vehicles', (req, res) => {
     db_interaction.getVehicles(req.query.categories, req.query.brands)
+        .then((vehicles) => { res.json(vehicles); })
+        .catch(() => { res.status(500).end(); });
+});
+*/
+
+// GET /api/vehicles
+// Gives all the vehicles in the
+app.get('/api/vehicles', (req, res) => {
+    db_interaction.getAllVehicles()
         .then((vehicles) => { res.json(vehicles); })
         .catch(() => { res.status(500).end(); });
 });
