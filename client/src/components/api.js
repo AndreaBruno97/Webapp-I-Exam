@@ -1,4 +1,5 @@
 import Vehicle from "./vehicle.js"
+import Rental from "./rental.js"
 const baseURL = "/api";
 
 // GET api/vehicles
@@ -83,5 +84,19 @@ async function getCookie(){
     }
 }
 
+// GET /api/rentals
+// Gives all the rentals of an authenticated user
+async function getRentals() {
+    let url = "/rentals";
 
-export default {getVehicles, getCookie, logout, login};
+    const response = await fetch(baseURL + url);
+    const rentalJson = await response.json();
+    if(response.ok){
+        return rentalJson.map((v) => new Rental(v.id, v.userId, v.vehicleId, v.startDay, v.endDay,  v.carCategory,  v.age,
+        v.driversNumber, v.estimatedKm, v.insurance,  v.price));
+    } else {
+        let err = {status: response.status, errObj:rentalJson};
+        return err;  // An object with the error coming from the server
+    }
+};
+export default {getVehicles, getCookie, logout, login, getRentals};

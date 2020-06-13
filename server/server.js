@@ -89,5 +89,4 @@ app.get('/api/rentals', (req, res) => {
     db_interaction.getAllRentals(req.user.id)
         .then((rentals) => { res.json(rentals); })
         .catch(() => { res.status(500).end(); });
-
 });

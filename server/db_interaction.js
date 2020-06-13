@@ -51,6 +51,12 @@ exports.checkUserPassword = function (username, password) {
     });
 };
 
+function rentalFromRow(row){
+    return {id: row.id, userId: row.userId, vehicleId: row.vehicleId, startDay: row.startDay,
+        endDay: row.endDay,  carCategory: row.carCategory,  age: row.age,  driversNumber: row.driversNumber,
+        estimatedKm: row.estimatedKm, insurance: row.insurance,  price: row.price};
+}
+
 exports.getAllRentals = function(userId){
     return new Promise((resolve, reject) => {
         let query=`SELECT * FROM rentals WHERE userId=?`;
@@ -62,10 +68,40 @@ exports.getAllRentals = function(userId){
             }
 
             //{id: , userId: , vehicleId: , startDay: , endDay: ,  carCategory: ,  age: ,  driversNumber: , estimatedKm: , insurance: ,  price: }
-            const projects = rows.map((e) => {return {id: e.id, userId: e.userId, vehicleId: e.vehicleId, startDay: e.startDay,
-                endDay: e.endDay,  carCategory: e.carCategory,  age: e.age,  driversNumber: e.driversNumber,
-                estimatedKm: e.estimatedKm, insurance: e.insurance,  price: e.price}});
+            const projects = rows.map((e) => {return rentalFromRow(e)});
             resolve(projects);
+        });
+    });
+};
+
+// Delete an existing rental, given its id
+exports.deleteRental = function (id){
+    return new Promise((resolve, reject) => {
+        let query = "DELETE FROM rentals WHERE id=?";
+
+        db.run(query, [id], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+};
+
+// Select an existing rental, given its id
+exports.RentalFromId = function(id){
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM rentals WHERE id=?";
+
+        db.get(query, [id], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row !== undefined){
+                resolve(row);
+            }
         });
     });
 };

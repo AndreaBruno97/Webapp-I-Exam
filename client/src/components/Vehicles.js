@@ -192,7 +192,6 @@ class VehiclesList extends React.Component {
             }
         </div>;
     }
-
 }
 
 class VehicleElement extends React.Component {
