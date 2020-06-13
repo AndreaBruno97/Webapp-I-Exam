@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const db_interaction = require('./db_interaction.js');
 const {check, validationResult} = require('express-validator');
 const jwtSecret = require('./secretString.js');
+const moment = require('moment');
 
 const jwt = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
@@ -36,7 +37,6 @@ app.get('/api/vehicles', (req, res) => {
 const expireTime = 60*60*24*7;//Seconds
 app.post("/api/login", [check('username').notEmpty(), check('password').notEmpty()],
     (req, res)=>{
-
         let flag = 1;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -89,4 +89,35 @@ app.get('/api/rentals', (req, res) => {
     db_interaction.getAllRentals(req.user.id)
         .then((rentals) => { res.json(rentals); })
         .catch(() => { res.status(500).end(); });
+});
+
+// Delete an existing rental, given its id
+// Delete only if the rental belongs to the user, and
+//             if it's a future one, so the start date is after the current
+
+// DELETE /api/rentals/:id
+app.delete("/api/rentals/:id", [check('id').notEmpty()],
+    (req, res)=>{
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({errors: errors.array()});
+        }
+
+        db_interaction.rentalFromId(req.params.id)
+            .then((result) => {
+                let startDay = moment(result.startDay);
+
+                // Checks on the rental
+                if(result.userId !== req.user.id ||
+                    startDay.isAfter(moment(), "day")){
+                    res.status(500).end();
+                }
+                else{
+                    db_interaction.deleteRental(req.params.id)
+                        .then(()=>{res.end();})
+                        .catch(()=>{res.status(500).end();})
+                }
+                res.end();
+            })
+            .catch(() => { res.status(500).end(); });
 });

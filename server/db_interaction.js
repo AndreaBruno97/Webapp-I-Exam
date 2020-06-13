@@ -90,7 +90,7 @@ exports.deleteRental = function (id){
 };
 
 // Select an existing rental, given its id
-exports.RentalFromId = function(id){
+exports.rentalFromId = function(id){
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM rentals WHERE id=?";
 
@@ -100,7 +100,10 @@ exports.RentalFromId = function(id){
                 return;
             }
             if (row !== undefined){
-                resolve(row);
+                resolve(rentalFromRow(row));
+            }
+            else{
+                reject();
             }
         });
     });
