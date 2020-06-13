@@ -58,7 +58,6 @@ async function logout(){
     });
 
     if (! response.ok){
-        console.log(response)
         throw response;
     }
 }

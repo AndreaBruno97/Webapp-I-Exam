@@ -24,7 +24,7 @@ app.use(function (err, req, res, next) {
 app.listen(PORT, ()=>console.log(`Server running on http://localhost:${PORT}/`));
 
 // GET /api/vehicles
-// Gives all the vehicles in the
+// Gives all the vehicles in the database
 app.get('/api/vehicles', (req, res) => {
     db_interaction.getAllVehicles()
         .then((vehicles) => { res.json(vehicles); })
@@ -68,12 +68,26 @@ app.use(
     })
 );
 
+// GET /api/user
+// Checks if the user is authenticated
 app.get("/api/user", (req, res)=>{
     res.json(
         req.user
     );
 });
-
+// POST /api/logout
+// Logs a user out
 app.post('/api/logout', (req, res) => {
     res.clearCookie('token').end();
+});
+
+// GET /api/rentals
+// Gives all the rentals of an authenticated user
+app.get('/api/rentals', (req, res) => {
+    // req.user = { id: , username: , iat: , exp:  }
+
+    db_interaction.getAllRentals(req.user.id)
+        .then((rentals) => { res.json(rentals); })
+        .catch(() => { res.status(500).end(); });
+
 });

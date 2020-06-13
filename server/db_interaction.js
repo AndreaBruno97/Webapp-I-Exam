@@ -50,3 +50,22 @@ exports.checkUserPassword = function (username, password) {
         });
     });
 };
+
+exports.getAllRentals = function(userId){
+    return new Promise((resolve, reject) => {
+        let query=`SELECT * FROM rentals WHERE userId=?`;
+
+        db.all(query, [userId], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+
+            //{id: , userId: , vehicleId: , startDay: , endDay: ,  carCategory: ,  age: ,  driversNumber: , estimatedKm: , insurance: ,  price: }
+            const projects = rows.map((e) => {return {id: e.id, userId: e.userId, vehicleId: e.vehicleId, startDay: e.startDay,
+                endDay: e.endDay,  carCategory: e.carCategory,  age: e.age,  driversNumber: e.driversNumber,
+                estimatedKm: e.estimatedKm, insurance: e.insurance,  price: e.price}});
+            resolve(projects);
+        });
+    });
+};

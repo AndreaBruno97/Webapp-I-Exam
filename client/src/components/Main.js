@@ -24,8 +24,8 @@ class Main extends React.Component {
                     this.setUser("",-1);
                 else
                     this.setUser(cookie.username, cookie.id);
-            }
-        );
+            })
+            .catch((err)=>this.props.handleErrors(err));
     }
 
     setUser = (name, id) => {
