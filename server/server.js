@@ -3,7 +3,6 @@ const morgan = require('morgan');
 const db_interaction = require('./db_interaction.js');
 const {check, validationResult} = require('express-validator');
 const jwtSecret = require('./secretString.js');
-const User = require('./user');
 
 const jwt = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');

@@ -14,11 +14,13 @@ class App extends React.Component {
     if (err) {
       if (err.status && err.status === 401) {
         // Signal login error
-        this.setState({serverError : "You are not authenticated"});
+        if(this.state.serverError !== `You are not authenticated`)
+          this.setState({serverError : `You are not authenticated`});
       }
       else{
         // Signal generic server error
-        this.setState({serverError : "Server error"});
+        if(this.state.serverError !== `Server error`)
+          this.setState({serverError : `Server error`});
       }
     }
   };
