@@ -1,7 +1,9 @@
 import React from 'react';
 import api from "./api";
-import {Col, Container, Row} from "react-bootstrap";
+import {Alert, Col, Container, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 
 class Rentals extends React.Component {
     constructor(props) {
@@ -64,6 +66,13 @@ class RentalsList extends React.Component {
 
 class RentalElement extends React.Component {
     render() {
+        if(this.props.rental.isDeleting === true){
+            return <Row>
+                <Col className="col-auto">
+                    <TemporaryElement/>
+                </Col>
+            </Row>
+        }
         return <Row>
             <Col className="col-auto">
                 {this.props.rental.startDay}
@@ -89,7 +98,19 @@ class RentalElement extends React.Component {
             <Col className="col-auto">
                 {this.props.rental.price}
             </Col>
+            {this.props.rental.isHistory? "":
+                <Col className="col-auto">
+                    <Button><FontAwesomeIcon icon={faTrashAlt}/></Button>
+                </Col>
+            }
         </Row>;
     }
 }
+
+class TemporaryElement extends React.Component{
+    render() {
+        return <Alert variant="secondary">This element is being deleted</Alert>
+    }
+}
+
 export default Rentals;

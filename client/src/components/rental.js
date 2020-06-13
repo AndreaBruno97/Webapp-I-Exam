@@ -26,6 +26,9 @@ class Rental{
         this.insurance = insurance === 1;
         // From integer (number of cents) in price
         this.price = (price/100).toFixed(2) + "€";
+
+        // Flag to say if this element is currently being deleted
+        this.isDeleting = false;
     }
 }
 
