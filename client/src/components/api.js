@@ -135,4 +135,61 @@ async function deleteRental(id){
     });
 };
 
-export default {getVehicles, getCookie, logout, login, getRentals,deleteRental};
+// GET /api/rentals/past
+// Gives the number of past rentals
+async function getPastRentalsNumber() {
+    let url = "/rentals/past";
+
+    const response = await fetch(baseURL + url);
+    const number = await response.json();
+    if(response.ok){
+        return number.num;
+    } else {
+        let err = {status: response.status, errObj:number};
+        return err;  // An object with the error coming from the server
+    }
+};
+
+// POST /api/stubpayment {fullName: , cardNumber: , cvv: }
+// Stub for a payment API
+async function stubPayment(fullName, cardNumber, cvv){
+    let url = "/stubpayment";
+
+    const response = await fetch(baseURL + url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+            {
+                "fullName": fullName,
+                "cardNumber": cardNumber,
+                "cvv": cvv
+            }),
+    });
+
+    if (! response.ok){
+        throw response;
+    }
+    else{
+        return;
+    }
+}
+
+// GET /api/vehicles/occupied {category: , startDay: , endDay: }
+// Gives the percentage of occupied vehicles and the number of free ones
+// Of a certain category, in a certain interval of time
+async function getOccupiedPercentage(category, startDay, endDay) {
+    let url = "/vehicles/occupied" + `?category=${category}&startDay=${startDay}&endDay=${endDay}`;
+
+    const response = await fetch(baseURL + url);
+    const number = await response.json();
+    if(response.ok){
+        return {perc: number.perc, free: number.free};
+    } else {
+        let err = {status: response.status, errObj:number};
+        return err;  // An object with the error coming from the server
+    }
+};
+
+export default {getVehicles, getCookie, logout, login, getRentals, deleteRental, getPastRentalsNumber, stubPayment, getOccupiedPercentage};

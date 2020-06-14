@@ -21,9 +21,9 @@ class NewRental extends React.Component {
             fullName: "",
             cardNumber: "",
             cvv: "",
-
             carsAvailable: undefined,
             price: undefined,
+            percentageOccupied: undefined,
 
             wrongData: false,
             correctSubmit: false
@@ -44,10 +44,13 @@ class NewRental extends React.Component {
             if(parametersAreChanging && isDifferent){
                 if(this.carErrors(tmpState) === false){
                     // The input is valid
-                    tmpState["carsAvailable"] = 3;
-                }else {
-                    // The input is not valid
-                    tmpState["carsAvailable"] = undefined;
+                    api.getOccupiedPercentage(tmpState["carCategory"], tmpState["startDay"], tmpState["endDay"])
+                        .then((res)=>{
+                                this.setState({percentageOccupied: res.perc, carsAvailable: res.free});
+                            }
+
+                        )
+                        .catch((err)=>{this.props.handleErrors(err)})
                 }
             }
 
@@ -55,10 +58,10 @@ class NewRental extends React.Component {
             if(isDifferent){
                 if(this.inputErrors(tmpState) === false){
                     // The input is valid
-                    tmpState["price"] = "100€";
+                    this.computePrice(tmpState);
                 }else {
                     // The input is not valid
-                    tmpState["price"] = undefined;
+                    this.setState({price: undefined});
                 }
             }
 
@@ -66,18 +69,33 @@ class NewRental extends React.Component {
         });
     };
 
+    computePrice = (state) =>{
+        let tmpPrice = 0;
+        switch (state.carCategory) {
+            case "A": tmpPrice = 80; break;
+            case "B": tmpPrice = 70; break;
+            case "C": tmpPrice = 60; break;
+            case "D": tmpPrice = 50; break;
+            case "E": tmpPrice = 40; break;
+        }
+        this.setState({price: tmpPrice});
+    };
+
     submitRental = () =>{
         this.setState((state)=>{
             let tmp = {...state};
+            let statusResult = {};
 
             if(this.inputErrors(tmp) || this.creditCardErrors(tmp)){
                 // Invalid input
-                return {wrongData: true, correctSubmit: false};
+                statusResult = {wrongData: true, correctSubmit: false};
             }
             else{
                 // Correct input
-                return {correctSubmit: true, wrongData: false};
+                statusResult = {correctSubmit: true, wrongData: false};
             }
+
+            return statusResult;
         })
     };
 

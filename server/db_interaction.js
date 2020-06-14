@@ -112,7 +112,7 @@ exports.rentalFromId = function(id){
 
 exports.getPastRentalsNumber = function(userId){
     return new Promise((resolve, reject) => {
-        let query=`SELECT COUNT(DISTINCT id) AS num FROM rentals WHERE userId=? AND `;
+        let query=`SELECT COUNT( DISTINCT id) as num FROM rentals WHERE userId = ? AND DATE("now") > DATE(endDay)`;
 
         db.get(query, [userId], (err, row) => {
             if (err) {
@@ -121,7 +121,43 @@ exports.getPastRentalsNumber = function(userId){
             }
             //{num: }
             if (row !== undefined){
-                resolve({"num":row.num});
+                resolve({"num": row.num});
+            }
+            else{
+                reject();
+            }
+        });
+    });
+};
+
+
+exports.getRentedCarsNumber = function(category, startDay, endDay){
+    return new Promise((resolve, reject) => {
+        let query=`SELECT COUNT( DISTINCT vehicleId) as num FROM rentals WHERE carCategory = ? AND DATE(?) <= DATE(endDay) AND DATE(?) >= DATE(startDay)`;
+
+        db.get(query, [category, startDay, endDay], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            //{num: }
+            if (row !== undefined){
+                let secondQuery = `SELECT COUNT(id) as tot FROM vehicles WHERE category = ?`;
+                let occupied = row.num;
+
+                db.get(secondQuery, [category], (err, row) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    //{tot: }
+                    if (row !== undefined){
+                        resolve({"perc": 1-(occupied/row.tot), "free": (row.tot - occupied)});
+                    }
+                    else{
+                        reject();
+                    }
+                });
             }
             else{
                 reject();

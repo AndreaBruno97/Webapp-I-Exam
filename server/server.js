@@ -75,6 +75,7 @@ app.get("/api/user", (req, res)=>{
         req.user
     );
 });
+
 // POST /api/logout
 // Logs a user out
 app.post('/api/logout', (req, res) => {
@@ -129,6 +130,30 @@ app.get('/api/rentals/past', (req, res) => {
     // req.user = { id: , username: , iat: , exp:  }
 
     db_interaction.getPastRentalsNumber(req.user.id)
-        .then((rentals) => { res.json(rentals); })
+        .then((num) => { res.json(num); })
+        .catch(() => { res.status(500).end(); });
+});
+
+// POST /api/stubpayment {fullName: , cardNumber: , cvv: }
+// Stub for a payment API
+app.post('/api/stubpayment', [check('fullName').notEmpty(),
+                            check('cardNumber').notEmpty(),
+                            check('cvv').notEmpty()], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+    }
+    else{
+        res.end();
+    }
+});
+
+// POST /api/vehicles/occupied ?category= &startDay= &endDay=
+// Gives the percentage of occupied vehicles and the number of free ones
+// Of a certain category, in a certain interval of time
+app.get('/api/vehicles/occupied', (req, res) => {
+    // req.user = { id: , username: , iat: , exp:  }
+    db_interaction.getRentedCarsNumber(req.query.category, req.query.startDay, req.query.endDay)
+        .then((perc) => { res.json(perc); })
         .catch(() => { res.status(500).end(); });
 });
