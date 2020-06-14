@@ -19,31 +19,67 @@ class NewRental extends React.Component {
             estimatedKm: "",
             insurance: false,
 
-            wrongData: false
+            carsAvailable: undefined,
+
+            wrongData: false,
+            correctSubmit: false
         };
     };
 
     updateField = (name, value) => {
+        /*
         this.setState({[name]: value});
-    };
 
-    submitRental = () =>{
+        // Check if the number of available cars needs to be updated
+        // I'm changing dates or category
+        let parametersAreChanging = ["startDay", "endDay", "carCategory"].includes(name);
+        // The value is different
+        let isDifferent = this.state[name] !== value;
+        // The input is valid
+        let validInput = this.carErrors() === false;
+        if(parametersAreChanging && isDifferent && validInput){
+            this.setState({carsAvailable: 3});
+        }
+        */
+
         this.setState((state)=>{
-            let startMoment = moment(state.startDay);
-            let endMoment = moment(state.endDay);
-            if(startMoment.isBefore(moment(), "day") ||
-                endMoment.isBefore(startMoment, "day") ||
-                ["A", "B", "C", "D", "E"].includes(state.carCategory) === false ||
-                Number.isInteger(state.age) === false || state.age < 0 ||
-                Number.isInteger(state.driversNumber) === false || state.driversNumber < 0 ||
-                Number.isInteger(state.estimatedKm) === false || state.estimatedKm < 0){
-                // Invalid input
-                return {wrongData: true};
-            }
+            let tmpState = {...state};
+            tmpState[name]= value;
+            return tmpState;
         });
     };
 
-    render() {
+    submitRental = () =>{
+        if(this.inputErrors()){
+            // Invalid input
+            return{wrongData: true, correctSubmit: false};
+        }
+        else{
+            // Correct input
+            return {correctSubmit: true, wrongData: false};
+        }
+    };
+
+    inputErrors(state){
+        if(state === undefined) state = this.state;
+        return this.carErrors(state) ||
+            Number.isInteger(state.age) === false || state.age < 0 ||
+            Number.isInteger(state.driversNumber) === false || state.driversNumber < 0 ||
+            Number.isInteger(state.estimatedKm) === false || state.estimatedKm < 0 ;
+    }
+
+    carErrors(state){
+        if(state === undefined) state = this.state;
+        let startMoment = moment(state.startDay);
+        let endMoment = moment(state.endDay);
+
+        return startMoment._isValid === false ||endMoment._isValid === false ||
+            startMoment.isBefore(moment(), "day") ||
+            endMoment.isBefore(startMoment, "day") ||
+            ["A", "B", "C", "D", "E"].includes(state.carCategory) === false;
+    }
+
+    render(){
         if(this.props.idVal === -1){
             return <></>;
         }
@@ -71,7 +107,7 @@ class NewRental extends React.Component {
                 <select name="carCategory" required
                        onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
                 >
-                    <option value="" hidden={true}></option>
+                    <option value="" hidden={true}> </option>
                     <option value="A">A</option>
                     <option value="B">B</option>
                     <option value="C">C</option>
@@ -104,9 +140,12 @@ class NewRental extends React.Component {
                 />
                 <br/>
 
+                {this.state.carsAvailable === undefined? "":<Alert variant="secondary">Cars available: {this.state.carsAvailable}</Alert>}
+
                 <Button variant="primary" type="submit">Submit</Button>
                 <Button variant="secondary" type="reset">Reset</Button>
                 {this.state.wrongData===true? <Alert variant="danger">Wrong values</Alert> :""}
+                {this.state.correctSubmit===true? <Alert variant="primary">Submit successfully</Alert> :""}
             </form>
         </>;
     }
