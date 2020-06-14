@@ -18,8 +18,12 @@ class NewRental extends React.Component {
             driversNumber: "",
             estimatedKm: "",
             insurance: false,
+            fullName: "",
+            cardNumber: "",
+            cvv: "",
 
             carsAvailable: undefined,
+            price: undefined,
 
             wrongData: false,
             correctSubmit: false
@@ -27,45 +31,63 @@ class NewRental extends React.Component {
     };
 
     updateField = (name, value) => {
-        /*
-        this.setState({[name]: value});
-
-        // Check if the number of available cars needs to be updated
-        // I'm changing dates or category
-        let parametersAreChanging = ["startDay", "endDay", "carCategory"].includes(name);
-        // The value is different
-        let isDifferent = this.state[name] !== value;
-        // The input is valid
-        let validInput = this.carErrors() === false;
-        if(parametersAreChanging && isDifferent && validInput){
-            this.setState({carsAvailable: 3});
-        }
-        */
-
         this.setState((state)=>{
             let tmpState = {...state};
             tmpState[name]= value;
+
+            // True if the value is different
+            let isDifferent = this.state[name] !== value;
+
+            // Check if the number of available cars needs to be updated
+            // I'm changing dates or category
+            let parametersAreChanging = ["startDay", "endDay", "carCategory"].includes(name);
+            if(parametersAreChanging && isDifferent){
+                if(this.carErrors(tmpState) === false){
+                    // The input is valid
+                    tmpState["carsAvailable"] = 3;
+                }else {
+                    // The input is not valid
+                    tmpState["carsAvailable"] = undefined;
+                }
+            }
+
+            // Check if the price needs to be updated
+            if(isDifferent){
+                if(this.inputErrors(tmpState) === false){
+                    // The input is valid
+                    tmpState["price"] = "100€";
+                }else {
+                    // The input is not valid
+                    tmpState["price"] = undefined;
+                }
+            }
+
             return tmpState;
         });
     };
 
     submitRental = () =>{
-        if(this.inputErrors()){
-            // Invalid input
-            return{wrongData: true, correctSubmit: false};
-        }
-        else{
-            // Correct input
-            return {correctSubmit: true, wrongData: false};
-        }
+        this.setState((state)=>{
+            let tmp = {...state};
+
+            if(this.inputErrors(tmp) || this.creditCardErrors(tmp)){
+                // Invalid input
+                return {wrongData: true, correctSubmit: false};
+            }
+            else{
+                // Correct input
+                return {correctSubmit: true, wrongData: false};
+            }
+        })
     };
 
     inputErrors(state){
         if(state === undefined) state = this.state;
-        return this.carErrors(state) ||
+        let flag =  this.carErrors(state) ||
             Number.isInteger(state.age) === false || state.age < 0 ||
             Number.isInteger(state.driversNumber) === false || state.driversNumber < 0 ||
             Number.isInteger(state.estimatedKm) === false || state.estimatedKm < 0 ;
+        return flag;
     }
 
     carErrors(state){
@@ -73,10 +95,20 @@ class NewRental extends React.Component {
         let startMoment = moment(state.startDay);
         let endMoment = moment(state.endDay);
 
-        return startMoment._isValid === false ||endMoment._isValid === false ||
+        let flag =  startMoment._isValid === false ||endMoment._isValid === false ||
             startMoment.isBefore(moment(), "day") ||
             endMoment.isBefore(startMoment, "day") ||
             ["A", "B", "C", "D", "E"].includes(state.carCategory) === false;
+        return flag;
+    }
+
+    creditCardErrors(state){
+        if(state === undefined) state = this.state;
+
+        let flag =  state.fullName === undefined || state.fullName.length === 0 ||
+            state.cardNumber === undefined || state.cardNumber.length === 0 ||
+            state.cvv === undefined || state.cvv.length === 0;
+        return flag;
     }
 
     render(){
@@ -140,7 +172,26 @@ class NewRental extends React.Component {
                 />
                 <br/>
 
-                {this.state.carsAvailable === undefined? "":<Alert variant="secondary">Cars available: {this.state.carsAvailable}</Alert>}
+                <Alert variant="secondary">Cars available: {this.state.carsAvailable === undefined? "":`${this.state.carsAvailable}`}</Alert>
+                <Alert variant="secondary">Price: {this.state.price === undefined? "": `${this.state.price}`}</Alert>
+
+                <label htmlFor="fullName">Full name</label>
+                <input type="text" name="fullName" required
+                       onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
+                />
+                <br/>
+
+                <label htmlFor="cardNumber">Card number</label>
+                <input type="text" name="cardNumber" required
+                       onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
+                />
+                <br/>
+
+                <label htmlFor="cvv">CVV number</label>
+                <input type="text" name="cvv" required
+                       onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
+                />
+                <br/>
 
                 <Button variant="primary" type="submit">Submit</Button>
                 <Button variant="secondary" type="reset">Reset</Button>

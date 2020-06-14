@@ -121,3 +121,14 @@ app.delete("/api/rentals/:id", [check('id').notEmpty()],
             })
             .catch(() => { res.status(500).end(); });
 });
+
+// GET /api/rentals/past
+// Gives the number of past rentals, to compute the discount
+// Only fully finished rentals count
+app.get('/api/rentals/past', (req, res) => {
+    // req.user = { id: , username: , iat: , exp:  }
+
+    db_interaction.getPastRentalsNumber(req.user.id)
+        .then((rentals) => { res.json(rentals); })
+        .catch(() => { res.status(500).end(); });
+});

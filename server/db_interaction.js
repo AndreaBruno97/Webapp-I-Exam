@@ -109,3 +109,23 @@ exports.rentalFromId = function(id){
         });
     });
 };
+
+exports.getPastRentalsNumber = function(userId){
+    return new Promise((resolve, reject) => {
+        let query=`SELECT COUNT(DISTINCT id) AS num FROM rentals WHERE userId=? AND `;
+
+        db.get(query, [userId], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            //{num: }
+            if (row !== undefined){
+                resolve({"num":row.num});
+            }
+            else{
+                reject();
+            }
+        });
+    });
+};
