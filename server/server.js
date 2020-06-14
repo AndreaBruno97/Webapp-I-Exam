@@ -109,7 +109,7 @@ app.delete("/api/rentals/:id", [check('id').notEmpty()],
 
                 // Checks on the rental
                 if(result.userId !== req.user.id ||
-                    startDay.isAfter(moment(), "day")){
+                    moment().isSameOrAfter(startDay, "day")){
                     res.status(500).end();
                 }
                 else{

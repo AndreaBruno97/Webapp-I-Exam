@@ -13,7 +13,7 @@ class Rental{
         let tmpEnd = moment(endDay);
 
         // In history if it has already started (it can't be deleted)
-        this.isHistory = moment().isAfter(tmpStart, 'day');
+        this.isHistory = moment().isSameOrAfter(tmpStart, 'day');
 
         this.startDay = tmpStart.format('D MMMM YYYY').toString();
         this.endDay = tmpEnd.format('D MMMM YYYY').toString();

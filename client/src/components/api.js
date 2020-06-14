@@ -99,4 +99,40 @@ async function getRentals() {
         return err;  // An object with the error coming from the server
     }
 };
-export default {getVehicles, getCookie, logout, login, getRentals};
+
+// DELETE /api/rentals/:id
+// Deletes a rental, if the relative user is the authenticated one,
+// and if the task is not past
+async function deleteRental(id){
+    // DELETE /api/rentals/:id
+    let url = `/rentals/${id}`;
+
+    return new Promise((resolve, reject) => {
+        fetch(baseURL + url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                {}),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((obj) => {
+                        reject(obj);
+                    }) // error msg in the response body
+                    .catch((err) => {
+                        reject({errors: [{param: "Application", msg: "Cannot parse server response"}]})
+                    }); // something else
+            }
+        })
+            .catch((err) => {
+                reject({errors: [{param: "Server", msg: "Cannot communicate"}]})
+            }); // connection errors
+    });
+};
+
+export default {getVehicles, getCookie, logout, login, getRentals,deleteRental};

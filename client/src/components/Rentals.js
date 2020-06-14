@@ -25,6 +25,23 @@ class Rentals extends React.Component {
             .catch((err)=>{this.props.handleErrors(err);});
     };
 
+    removeRental = (id) =>{
+        // Updates the state of the row into an intermediate one
+        this.setState((state)=>{
+            let tmp = [...state.rentals];
+            let target = tmp.filter((e)=>{return e.id ===id;})[0];
+            target.isDeleting = true;
+            return {rentals: tmp};
+        });
+
+        // Removes the rental
+        api.deleteRental(id)
+            .then(()=>{this.updateRentalsList();})
+            .catch((err)=>{
+                this.props.handleErrors(err);
+                this.updateRentalsList();});
+    };
+
     render() {
         if(this.props.idVal === -1){
             return <></>;
@@ -32,7 +49,7 @@ class Rentals extends React.Component {
         return <>
             <h1>RENTALS</h1>
             <Container fluid={true}>
-                <RentalsList rentals={this.state.rentals}/>
+                <RentalsList rentals={this.state.rentals} removeRental={this.removeRental}/>
             </Container>
         </>;
     }
@@ -49,13 +66,13 @@ class RentalsList extends React.Component {
             <>Future rentals</>
             {
                 this.props.rentals.map((e) =>
-                    e.isHistory === false? <RentalElement key={e.id} rental={e}/> : "")
+                    e.isHistory === false? <RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/> : "")
             }
 
             <>Past rentals</>
             {
                 this.props.rentals.map((e) =>
-                    e.isHistory === true? <RentalElement key={e.id} rental={e}/> : "")
+                    e.isHistory === true? <RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/> : "")
             }
         </div>;
     }
@@ -100,7 +117,7 @@ class RentalElement extends React.Component {
             </Col>
             {this.props.rental.isHistory? "":
                 <Col className="col-auto">
-                    <Button><FontAwesomeIcon icon={faTrashAlt}/></Button>
+                    <Button onClick={()=>{this.props.removeRental(this.props.rental.id)}}><FontAwesomeIcon icon={faTrashAlt}/></Button>
                 </Col>
             }
         </Row>;

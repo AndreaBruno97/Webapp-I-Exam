@@ -74,6 +74,7 @@ exports.getAllRentals = function(userId){
     });
 };
 
+
 // Delete an existing rental, given its id
 exports.deleteRental = function (id){
     return new Promise((resolve, reject) => {
