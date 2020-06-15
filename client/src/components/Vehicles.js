@@ -1,7 +1,6 @@
 import React from 'react';
 import api from "./api.js"
 import Button from "react-bootstrap/Button";
-import {Switch, Route, Link, BrowserRouter as Router, Redirect} from 'react-router-dom' ;
 import {Col, Row, Container} from "react-bootstrap";
 
 class Vehicles extends React.Component {

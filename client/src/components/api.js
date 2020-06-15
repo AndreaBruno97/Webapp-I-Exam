@@ -180,7 +180,7 @@ async function stubPayment(fullName, cardNumber, cvv){
 // Gives the percentage of occupied vehicles and the number of free ones
 // Of a certain category, in a certain interval of time
 async function getOccupiedPercentage(category, startDay, endDay) {
-    let url = "/vehicles/occupied" + `?category=${category}&startDay=${startDay}&endDay=${endDay}`;
+    let url = `/vehicles/occupied?category=${category}&startDay=${startDay}&endDay=${endDay}`;
 
     const response = await fetch(baseURL + url);
     const number = await response.json();

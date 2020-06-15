@@ -243,7 +243,7 @@ exports.newRental = function (userId, startDay, endDay, carCategory, age, driver
 
             let query = "INSERT INTO rentals(userId, vehicleId, startDay, endDay, carCategory, age, driversNumber, estimatedKm, insurance, price) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            let insuranceBit = insurance==="true"? 1:0;
+            let insuranceBit = insurance===true? 1:0;
             db.run(query, [userId, chosenCar, startDay, endDay, carCategory, age, driversNumber, estimatedKm, insuranceBit, price], function (err) {
                 if (err) {
                     reject(err);

@@ -1,7 +1,7 @@
 import React from 'react';
 import Login from "./components/Login.js"
 import Main from "./components/Main.js"
-import {Switch, Route, Link, BrowserRouter as Router, Redirect} from 'react-router-dom' ;
+import {Switch, Route, BrowserRouter as Router} from 'react-router-dom' ;
 
 class App extends React.Component {
 

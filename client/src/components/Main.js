@@ -3,7 +3,7 @@ import Vehicles from "./Vehicles.js"
 import NewRental from "./NewRental.js"
 import Rentals from "./Rentals.js"
 import api from './api.js';
-import {Switch, Route, Link, BrowserRouter as Router, Redirect} from 'react-router-dom' ;
+import {Switch, Route, BrowserRouter as Router, Redirect} from 'react-router-dom' ;
 import {Alert, Button} from "react-bootstrap";
 import {Navbar, Nav} from "react-bootstrap";
 
