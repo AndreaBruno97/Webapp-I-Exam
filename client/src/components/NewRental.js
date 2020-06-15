@@ -31,13 +31,55 @@ class NewRental extends React.Component {
     };
 
     updateField = (name, value) => {
+        let tmpState = {...this.state};
+        let previous = this.state[name];
+        this.setState({[name]: value});
+        tmpState[name]=value;
+        // True if the value is different
+        let isDifferent = previous !== value;
+
+        // Check if the number of available cars needs to be updated
+        // I'm changing dates or category
+        let parametersAreChanging = ["startDay", "endDay", "carCategory"].includes(name);
+        if(parametersAreChanging && isDifferent){
+            if(this.carErrors(tmpState) === false){
+                // The input is valid
+                api.getOccupiedPercentage(tmpState.carCategory, tmpState.startDay, tmpState.endDay)
+                    .then((res)=>{
+                            this.setState({percentageOccupied: res.perc, carsAvailable: res.free});
+                            //tmpState["percentageOccupied"] = res.perc;
+                            //tmpState["carsAvailable"] = res.free;
+                            //return tmpState;
+                        }
+
+                    )
+                    .catch((err)=>{this.props.handleErrors(err)})
+            }
+        }
+
+        // Check if the price needs to be updated
+        if(isDifferent){
+            if(this.inputErrors(tmpState) === false && tmpState.carsAvailable > 0){
+                // The input is valid
+                let newPrice = this.computePrice(tmpState);
+                this.setState({price: newPrice});
+                //tmpState["price"] = newPrice;
+                //return tmpState;
+            }else {
+                // The input is not valid
+                this.setState({price: undefined});
+                //tmpState["price"] = undefined;
+                //return tmpState;
+            }
+        }
+        /*
         this.setState((state)=>{
             let tmpState = {...state};
+            let previous = tmpState[name];
             tmpState[name]= value;
 
-
             // True if the value is different
-            let isDifferent = this.state[name] !== value;
+            let isDifferent = previous !== value;
 
             // Check if the number of available cars needs to be updated
             // I'm changing dates or category
@@ -47,10 +89,10 @@ class NewRental extends React.Component {
                     // The input is valid
                     api.getOccupiedPercentage(tmpState["carCategory"], tmpState["startDay"], tmpState["endDay"])
                         .then((res)=>{
-                                this.setState({percentageOccupied: res.perc, carsAvailable: res.free});
-                                //tmpState["percentageOccupied"] = res.perc;
-                                //tmpState["carsAvailable"] = res.free;
-                                //return tmpState;
+                                //this.setState({percentageOccupied: res.perc, carsAvailable: res.free});
+                                tmpState["percentageOccupied"] = res.perc;
+                                tmpState["carsAvailable"] = res.free;
+                                return tmpState;
                             }
 
                         )
@@ -63,19 +105,20 @@ class NewRental extends React.Component {
                 if(this.inputErrors(tmpState) === false && tmpState.carsAvailable > 0){
                     // The input is valid
                     let newPrice = this.computePrice(tmpState);
-                    this.setState({price: newPrice});
-                    //tmpState["price"] = newPrice;
-                    //return tmpState;
+                    //this.setState({price: newPrice});
+                    tmpState["price"] = newPrice;
+                    return tmpState;
                 }else {
                     // The input is not valid
-                    this.setState({price: undefined});
-                    //tmpState["price"] = undefined;
-                    //return tmpState;
+                    //this.setState({price: undefined});
+                    tmpState["price"] = undefined;
+                    return tmpState;
                 }
             }
 
             return tmpState;
         });
+        */
     };
 
     computePrice = (state) =>{
@@ -118,6 +161,7 @@ class NewRental extends React.Component {
     };
 
     submitRental = () =>{
+        /*
         this.setState((state)=>{
             let tmp = {...state};
 
@@ -132,11 +176,55 @@ class NewRental extends React.Component {
             }
             else{
                 // Correct input
-                statusResult = {correctSubmit: true, wrongData: false, noCarsFlag: false};
+                api.stubPayment(tmp.fullName, tmp.cardNumber, tmp.cvv)
+                    .then(()=>{
+                        // Payment accepted
+                        api.newRental(tmp.carCategory, tmp.startDay, tmp.endDay, tmp.estimatedKm, tmp.age, tmp.driversNumber, tmp.insurance, tmp.price)
+                            .then(()=>{
+                                statusResult = {correctSubmit: true, wrongData: false, noCarsFlag: false};
+                            })
+                            .catch((err)=>{this.props.handleErrors(err)})
+
+                        statusResult = {correctSubmit: true, wrongData: false, noCarsFlag: false};
+                    })
+                    .catch((err)=>{this.props.handleErrors(err)})
             }
 
             return statusResult;
         })
+        */
+        let tmp = {...this.state};
+
+        if(tmp.carsAvailable === 0) {
+            this.setState({noCarsFlag: true, wrongData: false, correctSubmit: false});
+            return;
+        }
+
+        let statusResult = {};
+
+        if(this.inputErrors(tmp) || this.creditCardErrors(tmp) || tmp.price === undefined){
+            // Invalid input
+            this.setState({wrongData: true, correctSubmit: false, noCarsFlag: false});
+            return;
+        }
+        else{
+            // Correct input
+            api.stubPayment(tmp.fullName, tmp.cardNumber, tmp.cvv)
+                .then(()=>{
+                    // Payment accepted
+
+                    api.newRental(tmp.carCategory, tmp.startDay, tmp.endDay, tmp.estimatedKm, tmp.age, tmp.driversNumber, tmp.insurance, tmp.price)
+                        .then(()=>{
+                            this.setState({correctSubmit: true, wrongData: false, noCarsFlag: false});
+                            return;
+                        })
+                        .catch((err)=>{this.props.handleErrors(err)})
+
+                    return;
+                })
+                .catch((err)=>{this.props.handleErrors(err)})
+        }
+
     };
 
     inputErrors(state){

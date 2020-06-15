@@ -192,4 +192,35 @@ async function getOccupiedPercentage(category, startDay, endDay) {
     }
 };
 
-export default {getVehicles, getCookie, logout, login, getRentals, deleteRental, getPastRentalsNumber, stubPayment, getOccupiedPercentage};
+// POST /api/rentals {category: ,startDay: ,endDay: ,estimatedkm: ,age: ,drivers: ,insurance: ,price: }
+// Receives data for a new rental and checks the input
+async function newRental(category, startDay, endDay, estimatedkm, age, drivers, insurance, price){
+    let url = "/rentals";
+
+    const response = await fetch(baseURL + url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+            {
+                category: category,
+                startDay: startDay,
+                endDay: endDay,
+                estimatedkm: estimatedkm,
+                age: age,
+                drivers: drivers,
+                insurance: insurance,
+                price: Math.round(100*parseFloat(price).toFixed(2))
+            }),
+    });
+
+    if (! response.ok){
+        throw response;
+    }
+    else{
+        return;
+    }
+}
+
+export default {getVehicles, getCookie, logout, login, getRentals, deleteRental, getPastRentalsNumber, stubPayment, getOccupiedPercentage, newRental};

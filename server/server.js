@@ -158,9 +158,9 @@ app.get('/api/vehicles/occupied', (req, res) => {
         .catch(() => { res.status(500).end(); });
 });
 
-// POST /api/newrental {category: ,startDay: ,endDay: ,estimatedkm: ,age: ,drivers: ,insurance: ,price: }
+// POST /api/rentals {category: ,startDay: ,endDay: ,estimatedkm: ,age: ,drivers: ,insurance: ,price: }
 // Receives data for a new rental and checks the input
-app.post('/api/newrental', [check('category').notEmpty(),
+app.post('/api/rentals', [check('category').notEmpty(),
                             check('startDay').notEmpty(),
                             check('endDay').notEmpty(),
                             check('estimatedkm').notEmpty(),
@@ -195,11 +195,12 @@ app.post('/api/newrental', [check('category').notEmpty(),
     }
 
     db_interaction.getPrice(req.user.id, req.body.category, req.body.startDay, req.body.endDay,
-        intEstimatedKm, intAge, intDriversNumber, req.body.insurance === "true")
+        intEstimatedKm, intAge, intDriversNumber, req.body.insurance)
         .then((newRes)=>{
             // if price does not match
-            if (newRes !== intPrice)
+            if (newRes !== intPrice) {
                 newRes.status(500).end();
+            }
 
             db_interaction.newRental(req.user.id, req.body.startDay, req.body.endDay,
                 req.body.category, intAge, intDriversNumber, intEstimatedKm, req.body.insurance, req.body.price)
