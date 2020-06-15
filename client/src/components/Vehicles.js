@@ -17,8 +17,10 @@ class Vehicles extends React.Component {
                 "E": true
             },
             categoryActiveNumber: 5,
+            allCategoriesActive: true,
             brands : {},
-            brandsActiveNumber: 0
+            brandsActiveNumber: 0,
+            allBrandsActive: true
         };
     }
 
@@ -29,40 +31,48 @@ class Vehicles extends React.Component {
     updateVehiclesList = () =>{
         api.getVehicles()
             .then((v)=>{
-                let newCounter = 0;
                 let tmpBrands = {};
 
                 for(let vehicle of v){
                     tmpBrands[vehicle.brand] = true;
-                    newCounter++;
                 }
 
-                this.setState({vehicles: v, brands: tmpBrands, brandsActiveNumber: newCounter})}
+                this.setState({vehicles: v, brands: tmpBrands, brandsActiveNumber: Object.keys(tmpBrands).length})}
                 )
             .catch((err)=>{this.props.handleErrors(err);});
     };
 
-    toggleFilterCategories = (value) => {
+    toggleFilter = (value, flag) => {
         this.setState((state)=>{
-            let tmp = {...state.categories};
-            let newCounter = state.categoryActiveNumber;
+            let tmp = flag === "category"?{...state.categories} : {...state.brands};
+            let oldCounter = flag === "category"?state.categoryActiveNumber:state.brandsActiveNumber;
+            let newCounter = oldCounter;
+            let newAllActive;
+            tmp[value]? newCounter-- : newCounter++;
 
-            tmp[value]? newCounter++ : newCounter--;
-            tmp[value] = !tmp[value];
+            if(newCounter < Object.keys(tmp).length) {
+                // Not all filters are active
+                if (oldCounter === Object.keys(tmp).length) {
+                    //Previously they were all active
+                    for (let e in tmp)
+                            tmp[e] = false;
+                    tmp[value] = true;
+                    newCounter = 1;
+                }
+                else
+                    tmp[value] = !tmp[value];
+                newAllActive = false;
+            }
+            else{
+                // All filters are active
+                for (let e in tmp){tmp[e]=true;}
+                newCounter = Object.keys(tmp).length;
+                newAllActive = true;
+            }
 
-            return {categories: tmp, categoryActiveNumber: newCounter};
-        });
-    };
-
-    toggleFilterBrands = (value) => {
-        this.setState((state)=>{
-            let tmp = {...state.brands};
-            let newCounter = state.brandsActiveNumber;
-
-            tmp[value]? newCounter++ : newCounter--;
-            tmp[value] = !tmp[value];
-
-            return {brands: tmp, brandsActiveNumber: newCounter};
+            return flag === "category"?
+                {categories: tmp, categoryActiveNumber: newCounter, allCategoriesActive: newAllActive}:
+                {brands: tmp, brandsActiveNumber: newCounter, allBrandsActive: newAllActive};
         });
     };
 
@@ -75,7 +85,7 @@ class Vehicles extends React.Component {
                 tmp[e]=true;
                 num++;
             }
-            return {categories: tmp, categoryActiveNumber: num}
+            return {categories: tmp, categoryActiveNumber: num, allCategoriesActive: true}
         });
     };
 
@@ -88,7 +98,7 @@ class Vehicles extends React.Component {
                 tmp[e]=true;
                 num++;
             }
-            return {brands: tmp, brandsActiveNumber: num}
+            return {brands: tmp, brandsActiveNumber: num, allBrandsActive: true}
         });
     };
 
@@ -111,9 +121,11 @@ class Vehicles extends React.Component {
                     <Col xs={12} sm={4}>
                         {/* Aside */}
                         <CategoriesList categories={this.state.categories} numActive={this.state.categoryActiveNumber}
-                                        toggle={this.toggleFilterCategories} allFilters={this.allCategoriesActive}/>
+                                        allCategoriesActive={this.state.allCategoriesActive}
+                                        toggle={this.toggleFilter} allFilters={this.allCategoriesActive}/>
                         <BrandsList brands={this.state.brands} numActive={this.state.brandsActiveNumber}
-                                    toggle={this.toggleFilterBrands} allFilters={this.allBrandsActive}/>
+                                    allBrandsActive={this.state.allBrandsActive}
+                                    toggle={this.toggleFilter} allFilters={this.allBrandsActive}/>
                     </Col>
 
                     <Col xs={12} sm={8}>
@@ -138,10 +150,10 @@ class CategoriesList extends React.Component {
             list.push(e);
 
         return <div>
-            <Button onClick={()=>this.props.allFilters()} active>All categories</Button>
+            <Button onClick={()=>this.props.allFilters()} active={this.props.allCategoriesActive}>All categories</Button>
             {
                 list.map((e)=>
-                    <CategoryElement key={e} category={e} flag={this.props.categories[e]} toggle={this.props.toggle}/>)
+                    <CategoryElement key={e} category={e} flag={this.props.categories[e]} toggle={this.props.toggle} allActive={this.props.allCategoriesActive}/>)
             }
         </div>;
     }
@@ -149,7 +161,8 @@ class CategoriesList extends React.Component {
 
 class CategoryElement extends React.Component {
     render() {
-        return <Button onClick={()=>this.props.toggle(this.props.category)} active={this.props.flag}>{this.props.category}</Button>
+        let activeFlag = this.props.allActive? false : this.props.flag;
+        return <Button onClick={()=>this.props.toggle(this.props.category, "category")} active={activeFlag}>{this.props.category}</Button>
     }
 }
 
@@ -160,10 +173,10 @@ class BrandsList extends React.Component {
             list.push(e);
 
         return <div>
-            <Button onClick={()=>this.props.allFilters()} active>All brands</Button>
+            <Button onClick={()=>this.props.allFilters()}  active={this.props.allBrandsActive}>All brands</Button>
             {
                 list.map((e)=>
-                    <BrandElement key={e} brand={e} flag={this.props.brands[e]} toggle={this.props.toggle}/>)
+                    <BrandElement key={e} brand={e} flag={this.props.brands[e]} toggle={this.props.toggle} allActive={this.props.allBrandsActive}/>)
             }
         </div>;
     }
@@ -172,7 +185,8 @@ class BrandsList extends React.Component {
 
 class BrandElement extends React.Component {
     render() {
-        return <Button onClick={()=>this.props.toggle(this.props.brand)} active={this.props.flag}>{this.props.brand}</Button>
+        let activeFlag = this.props.allActive? false : this.props.flag;
+        return <Button onClick={()=>this.props.toggle(this.props.brand, "brand")} active={activeFlag}>{this.props.brand}</Button>
     }
 }
 
