@@ -165,3 +165,92 @@ exports.getRentedCarsNumber = function(category, startDay, endDay){
         });
     });
 };
+
+exports.getPrice = function (id, category, startDay, endDay, estimatedkm, age, drivers, insurance){
+    return new Promise((resolve, reject) => {
+        let tmpPrice = 0;
+        switch (category) {
+            case "A":
+                tmpPrice = 80;
+                break;
+            case "B":
+                tmpPrice = 70;
+                break;
+            case "C":
+                tmpPrice = 60;
+                break;
+            case "D":
+                tmpPrice = 50;
+                break;
+            case "E":
+                tmpPrice = 40;
+                break;
+        }
+
+        if (estimatedkm < 50)
+            tmpPrice *= 0.95;
+        else if (estimatedkm > 150)
+            tmpPrice *= 1.05;
+
+        if (age < 25)
+            tmpPrice *= 1.05;
+        else if (age > 65)
+            tmpPrice *= 1.1;
+
+        if (drivers >= 1)
+            tmpPrice *= 1.15;
+        if (insurance === true)
+            tmpPrice *= 1.2;
+
+        this.getRentedCarsNumber(category, startDay, endDay)
+            .then((res) => {
+                let perc = res.perc;
+                let free = res.free;
+
+                if(free === 0)
+                    reject();
+                if(perc < 0.1)
+                    tmpPrice *= 1.1;
+                this.getPastRentalsNumber(id)
+                    .then((res)=>{
+                        if(res.num > 3)
+                            tmpPrice *= 0.9;
+
+                        resolve(Math.round(100*(tmpPrice.toFixed(2))));
+                    })
+                    .catch((err) => {
+                        reject(err)
+                    })
+            })
+            .catch((err) => {
+                reject(err)
+            });
+    });
+};
+
+exports.newRental = function (userId, startDay, endDay, carCategory, age, driversNumber, estimatedKm, insurance, price) {
+    return new Promise((resolve, reject) => {
+        let query=`SELECT DISTINCT id FROM vehicles WHERE category = ? AND id NOT IN (SELECT DISTINCT vehicleID FROM rentals WHERE carCategory = ? AND DATE(?) <= DATE(endDay) AND DATE(?) >= DATE(startDay))`;
+        // Find the free cars with matching category
+        db.all(query, [carCategory, carCategory, startDay, endDay], (err, rows) => {
+            if (err || rows.length === 0) {
+                reject(err);
+                return;
+            }
+
+            //I choose the first free car
+            let chosenCar = rows[0].id;
+
+            let query = "INSERT INTO rentals(userId, vehicleId, startDay, endDay, carCategory, age, driversNumber, estimatedKm, insurance, price) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            let insuranceBit = insurance==="true"? 1:0;
+            db.run(query, [userId, chosenCar, startDay, endDay, carCategory, age, driversNumber, estimatedKm, insuranceBit, price], function (err) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve();
+            });
+        });
+    });
+};

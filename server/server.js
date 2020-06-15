@@ -157,3 +157,56 @@ app.get('/api/vehicles/occupied', (req, res) => {
         .then((perc) => { res.json(perc); })
         .catch(() => { res.status(500).end(); });
 });
+
+// POST /api/newrental {category: ,startDay: ,endDay: ,estimatedkm: ,age: ,drivers: ,insurance: ,price: }
+// Receives data for a new rental and checks the input
+app.post('/api/newrental', [check('category').notEmpty(),
+                            check('startDay').notEmpty(),
+                            check('endDay').notEmpty(),
+                            check('estimatedkm').notEmpty(),
+                            check('age').notEmpty(),
+                            check('drivers').notEmpty(),
+                            check('insurance').notEmpty(),
+                            check('price').notEmpty()], (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+    }
+
+    //Extra validation
+    let startMoment = moment(req.body.startDay);
+    let endMoment = moment(req.body.endDay);
+    let intAge = parseInt(req.body.age);
+    let intDriversNumber = parseInt(req.body.drivers);
+    let intEstimatedKm = parseInt(req.body.estimatedkm);
+    let intPrice = parseInt(req.body.price);
+
+    if(startMoment._isValid === false ||endMoment._isValid === false ||
+        startMoment.isBefore(moment(), "day") ||
+        endMoment.isBefore(startMoment, "day") ||
+        ["A", "B", "C", "D", "E"].includes(req.body.category) === false ||
+        Number.isInteger(intAge) === false || intAge < 0 ||
+        Number.isInteger(intDriversNumber) === false || intDriversNumber < 0 ||
+        Number.isInteger(intEstimatedKm) === false || intEstimatedKm < 0 ||
+        Number.isInteger(intPrice) === false || intPrice < 0){
+        // Wrong input
+        res.status(500).end();
+    }
+
+    db_interaction.getPrice(req.user.id, req.body.category, req.body.startDay, req.body.endDay,
+        intEstimatedKm, intAge, intDriversNumber, req.body.insurance === "true")
+        .then((newRes)=>{
+            // if price does not match
+            if (newRes !== intPrice)
+                newRes.status(500).end();
+
+            db_interaction.newRental(req.user.id, req.body.startDay, req.body.endDay,
+                req.body.category, intAge, intDriversNumber, intEstimatedKm, req.body.insurance, req.body.price)
+                .then(()=>{
+                    res.end();
+                })
+                .catch(()=>{res.status(500).end();})
+        })
+        .catch(()=>{res.status(500).end();})
+});
