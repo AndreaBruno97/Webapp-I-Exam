@@ -148,7 +148,7 @@ app.post('/api/stubpayment', [check('fullName').notEmpty(),
     }
 });
 
-// POST /api/vehicles/occupied ?category= &startDay= &endDay=
+// GET /api/vehicles/occupied ?category= &startDay= &endDay=
 // Gives the percentage of occupied vehicles and the number of free ones
 // Of a certain category, in a certain interval of time
 app.get('/api/vehicles/occupied', (req, res) => {
