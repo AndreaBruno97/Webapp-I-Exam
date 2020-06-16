@@ -200,6 +200,31 @@ class NewRental extends React.Component {
             .catch((err)=>{this.props.handleError(err);});
     }
 
+    resetState = () =>{
+        this.setState({
+            startDay: "",
+            endDay: "",
+            carCategory: "",
+            age: "",
+            driversNumber: "",
+            estimatedKm: "",
+            insurance: false,
+            fullName: "",
+            cardNumber: "",
+            cvv: "",
+
+            carsAvailable: undefined,
+            price: undefined,
+            percentageOccupied: undefined,
+            isFrequent: false,
+
+            wrongData: false,
+            correctSubmit: false,
+            noCarsFlag: false,
+            redirected: false
+        });
+    };
+
     render(){
         if(this.props.idVal === -1){
             return <></>;
@@ -286,7 +311,7 @@ class NewRental extends React.Component {
                 <br/>
 
                 <Button variant="primary" type="submit">Submit</Button>
-                <Button variant="secondary" type="reset">Reset</Button>
+                <Button variant="secondary" type="reset" onClick={()=>{this.resetState()}}>Reset</Button>
                 {this.state.wrongData===true? <Alert variant="danger">Wrong values</Alert> :""}
                 {this.state.correctSubmit===true? <Alert variant="primary">Submit successfully</Alert> :""}
                 {this.state.noCarsFlag===true? <Alert variant="danger">No cars available</Alert> :""}
