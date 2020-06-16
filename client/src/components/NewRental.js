@@ -49,9 +49,22 @@ class NewRental extends React.Component {
                 api.getOccupiedPercentage(tmpState.carCategory, tmpState.startDay, tmpState.endDay)
                     .then((res)=>{
                             this.setState({percentageOccupied: res.perc, carsAvailable: res.free});
-                            //tmpState["percentageOccupied"] = res.perc;
-                            //tmpState["carsAvailable"] = res.free;
+                            tmpState["percentageOccupied"] = res.perc;
+                            tmpState["carsAvailable"] = res.free;
                             //return tmpState;
+                            // Re-compute the price, if needed
+                            if(this.inputErrors(tmpState) === false && tmpState.carsAvailable > 0){
+                                // The input is valid
+                                let newPrice = this.computePrice(tmpState);
+                                this.setState({price: newPrice});
+                                //tmpState["price"] = newPrice;
+                                //return tmpState;
+                            }else {
+                                // The input is not valid
+                                this.setState({price: undefined});
+                                //tmpState["price"] = undefined;
+                                //return tmpState;
+                            }
                         }
 
                     )
