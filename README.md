@@ -14,45 +14,55 @@ Page in which a user can book a new rental, inserting all the required fields, a
 
 ## REST API server
 
-- GET `/api/vehicles` (no need for cookie)  
+- GET `/api/vehicles`  
+Lists all the vehicles in the system (no need for cookie)   
   - No input
   - Gives a list of vehicle objects: {id, category, brand, model}
 
-- POST `/api/login` (no need for cookie)
+- POST `/api/login`  
+Allows a user to log in (no need for cookie)  
   - Receives authentication info {username, password}
   - Sets the cookie
 
-- GET `/api/user`
-  - Checks cookie to verify if the user is authenticated
+- GET `/api/user`  
+Verifies if the user is authenticated  
+  - Checks cookie
   - No response (status 401 means unauthorized)
 
-- POST `/api/logout`
+- POST `/api/logout`  
+Allows a user to log out
   - Checks cookie
   - No response (clears cookie)
 
-- GET `/api/rentals`
+- GET `/api/rentals`  
+Gives the list of rentals of the authenticated user
   - Checks cookie
-  - Gives a list of rentals of the user {id, userId, vehicleId, startDay,
+  - Gives a list of rentals {id, userId, vehicleId, startDay,
         endDay,  carCategory,  age,  driversNumber,
         estimatedKm, insurance,  price}
 
-- DELETE `/api/rentals/:id`
-  - Receives the id of the rental to delete
+- DELETE `/api/rentals/:id`  
+Deletes a rental with specified id
+  - Receives the id of the rental
   - No response (only status)
 
-- GET `/api/rentals/past`
+- GET `/api/rentals/past`  
+Returns the number of past rentals of the authenticated user
   - Checks cookie
   - Gives the number of past rentals {num}
 
-- POST `/api/stubpayment`
+- POST `/api/stubpayment`  
+API that simulates the interaction with an extern bank: checks the presence of the fields
   - Receives credit card information {fullName , cardNumber , cvv}
   - No response (only status)
 
-- GET `/api/vehicles/occupied`
-  - Receives category, start date and end date of the rental as query parameters (?category= &startDay= &endDay=)
+- GET `/api/vehicles/occupied`  
+Given a car category, a start and an end date, checks the percentage of occupied cars and the number of free ones
+  - Receives filters as query parameters (?category= &startDay= &endDay=)
   - Gives the percentage of occupied vehicles and the number of free ones {prec, free}
 
-- POST `/api/rentals`
+- POST `/api/rentals`  
+Given rental information, accepts a new rental for an authenticated user
   - Receives a new rental {category ,startDay ,endDay ,estimatedkm ,age ,drivers ,insurance ,price}
   - No response (only status)
 
@@ -84,13 +94,22 @@ Page in which a user can book a new rental, inserting all the required fields, a
 
 
 ## Main React Components
-<!---
-- `ListOfSomething` (in `List.js`): component purpose and main functionality
-- `GreatButton` (in `GreatButton.js`): component purpose and main functionality
-- ...
 
-(only _main_ components, minor ones may be skipped)
--->
+- `App` (in `App.js`): Main container of the pages, handles general error messages and differentiates the login page rfom the other ones
+  - `Login` (in `Login.js`): Page for the login
+  - `Main` (in `Main.js`): Component that holds the authentication status of the user, and handles the routes of the principal pages. It also contains the navbar
+    - `Vehicles` (in `Vehicles.js`): Shows the list of vehicles, and lets the user filter them by category and brand
+      - `VehiclesList` (in `Vehicles.js`): List of vehicles
+        - `VehicleElement` (in `Vehicles.js`): Single vehicle
+      - `CategoriesList` (in `Vehicles.js`): List of buttons for category filters
+        - `CategoryElement` (in `Vehicles.js`): Single button for category filters
+      - `BrandsList` (in `Vehicles.js`): List of buttons for brand filters
+        - `BrandElement` (in `Vehicles.js`): Single button for brand filters
+    - `Rentals` (in `Rentals.js`): Shows the list of past and future rentals of the authenticated user, and lets him delete future ones
+      - `RentalsList` (in `Rentals.js`): List of rentals (internally divides past and future ones)
+        - `RentalElement` (in `Rentals.js`): Single rental
+          - `TemporaryElement` (in `Rentals.js`): When a rental is deleted by the user, this stub element is rendered until the data is re-fetched from the server
+    - `NewRental` (in `NewRental.js`): Page with the form that handles the creation of a new rental
 
 ## Screenshot
 <!---
@@ -98,10 +117,11 @@ Page in which a user can book a new rental, inserting all the required fields, a
 -->
 
 ## Test users
-<!---
-* username, password
-* username, password
-* username, password (frequent customer)
-* username, password
-* username, password (frequent customer)
--->
+
+| Username | Password | Is frequent? |
+| -------- | -------- | ------------ |
+| user1    | user1    | Frequent     |
+| user2    | user2    |              |
+| user3    | user3    |              |
+| user4    | user4    |              |
+| user5    | user5    |              |
