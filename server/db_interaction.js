@@ -1,5 +1,6 @@
 'use strict';
 const Vehicle = require('./vehicle');
+const moment = require('moment');
 
 // Db inizialization
 const sqlite = require('sqlite3');
@@ -215,6 +216,11 @@ exports.getPrice = function (id, category, startDay, endDay, estimatedkm, age, d
                     .then((res)=>{
                         if(res.num > 3)
                             tmpPrice *= 0.9;
+
+                        let startMoment = moment(startDay);
+                        let endMoment = moment(endDay);
+                        let numberOfDays = endMoment.diff(startMoment, 'days') + 1;
+                        tmpPrice *= numberOfDays;
 
                         resolve(Math.round(100*(tmpPrice.toFixed(2))));
                     })

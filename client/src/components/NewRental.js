@@ -127,6 +127,10 @@ class NewRental extends React.Component {
         if(state.isFrequent === true)
             tmpPrice *= 0.9;
 
+        let startMoment = moment(state.startDay);
+        let endMoment = moment(state.endDay);
+        let numberOfDays = endMoment.diff(startMoment, 'days') + 1;
+        tmpPrice *= numberOfDays;
         //this.setState({price: tmpPrice.toFixed(2)});
         return tmpPrice.toFixed(2);
     };
