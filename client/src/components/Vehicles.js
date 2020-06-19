@@ -113,23 +113,36 @@ class Vehicles extends React.Component {
 
     render() {
         return <>
-            <h1>VEHICLES</h1>
-            <Container >
+            <Container fluid={true}>
                 <Row>
 
-                    <Col xs={12} sm={4}>
+                    <Col id="myAside" xs={12} sm={4}>
                         {/* Aside */}
+                        <p>Categories</p>
                         <CategoriesList categories={this.state.categories} numActive={this.state.categoryActiveNumber}
                                         allCategoriesActive={this.state.allCategoriesActive}
                                         toggle={this.toggleFilter} allFilters={this.allCategoriesActive}/>
+                        <p  id="brandsTitleInVehicle">Brands</p>
                         <BrandsList brands={this.state.brands} numActive={this.state.brandsActiveNumber}
                                     allBrandsActive={this.state.allBrandsActive}
                                     toggle={this.toggleFilter} allFilters={this.allBrandsActive}/>
                     </Col>
 
-                    <Col xs={12} sm={8}>
+                    <Col id="myMain" xs={12} sm={8}>
+                        <h1>VEHICLES</h1>
                         {/* Content */}
                         <Container fluid={true}>
+                            <Row id="TitleRowVehicleList">
+                                <Col xs={2}>
+                                    Category
+                                </Col>
+                                <Col xs={4}>
+                                    Brand
+                                </Col>
+                                <Col>
+                                    Model
+                                </Col>
+                            </Row>
                             <VehiclesList categories={this.state.categories} brands={this.state.brands} vehicles={this.filteredVehicles()}/>
                         </Container>
 
@@ -149,11 +162,13 @@ class CategoriesList extends React.Component {
             list.push(e);
 
         return <div>
-            <Button onClick={()=>this.props.allFilters()} active={this.props.allCategoriesActive}>All categories</Button>
-            {
-                list.map((e)=>
-                    <CategoryElement key={e} category={e} flag={this.props.categories[e]} toggle={this.props.toggle} allActive={this.props.allCategoriesActive}/>)
-            }
+            <Button id="allCategoriesFilter" onClick={()=>this.props.allFilters()} active={this.props.allCategoriesActive}>All categories</Button>
+            <div className="buttonList">
+                {
+                    list.map((e)=>
+                        <CategoryElement key={e} category={e} flag={this.props.categories[e]} toggle={this.props.toggle} allActive={this.props.allCategoriesActive}/>)
+                }
+            </div>
         </div>;
     }
 }
@@ -161,7 +176,7 @@ class CategoriesList extends React.Component {
 class CategoryElement extends React.Component {
     render() {
         let activeFlag = this.props.allActive? false : this.props.flag;
-        return <Button onClick={()=>this.props.toggle(this.props.category, "category")} active={activeFlag}>{this.props.category}</Button>
+        return <Button className="categoryFilterButton" onClick={()=>this.props.toggle(this.props.category, "category")} active={activeFlag}>{this.props.category}</Button>
     }
 }
 
@@ -172,11 +187,13 @@ class BrandsList extends React.Component {
             list.push(e);
 
         return <div>
-            <Button onClick={()=>this.props.allFilters()}  active={this.props.allBrandsActive}>All brands</Button>
-            {
-                list.map((e)=>
-                    <BrandElement key={e} brand={e} flag={this.props.brands[e]} toggle={this.props.toggle} allActive={this.props.allBrandsActive}/>)
-            }
+            <Button id="allBrandsFilter" onClick={()=>this.props.allFilters()}  active={this.props.allBrandsActive}>All brands</Button>
+            <div className="buttonList">
+                {
+                    list.map((e)=>
+                        <BrandElement key={e} brand={e} flag={this.props.brands[e]} toggle={this.props.toggle} allActive={this.props.allBrandsActive}/>)
+                }
+            </div>
         </div>;
     }
 
@@ -185,7 +202,7 @@ class BrandsList extends React.Component {
 class BrandElement extends React.Component {
     render() {
         let activeFlag = this.props.allActive? false : this.props.flag;
-        return <Button onClick={()=>this.props.toggle(this.props.brand, "brand")} active={activeFlag}>{this.props.brand}</Button>
+        return <Button className="brandFilterButton" onClick={()=>this.props.toggle(this.props.brand, "brand")} active={activeFlag}>{this.props.brand}</Button>
     }
 }
 
@@ -210,13 +227,13 @@ class VehiclesList extends React.Component {
 class VehicleElement extends React.Component {
     render() {
         return <Row>
-            <Col className="col-auto">
+            <Col xs={2}>
                 {this.props.category}
             </Col>
-            <Col className="col-auto">
+            <Col xs={4}>
                 {this.props.brand}
             </Col>
-            <Col className="col-auto">
+            <Col>
                 {this.props.model}
             </Col>
         </Row>;

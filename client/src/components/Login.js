@@ -33,9 +33,8 @@ class Login extends React.Component{
         if (this.state.redirected === true)
             return <Redirect to="/" />;
 
-        return <>
+        return <div id="loginContainer">
             <h1>LOGIN</h1>
-            <Link to="/">Main page</Link>
 
             <form id="loginForm" onSubmit={(e)=> {
                     e.preventDefault();
@@ -51,21 +50,26 @@ class Login extends React.Component{
                 <div>
                     <p>Username</p>
                     <input type="text" name="user" required
+                           value={this.state.user}
                            onChange={(ev)=>this.updateField(ev.target.name, ev.target.value)}
                     /><br/>
-                    <p>Password</p>
-                    <input type={this.state.passShown?"text":"password"} name="pass" required
-                           onChange={(ev)=>this.updateField(ev.target.name, ev.target.value)}
-                    />
-                    <FontAwesomeIcon size="lg" icon={this.state.passShown? faEye:faEyeSlash} onClick={()=>{this.setPassShown()}}/>
+                    <p id="LoginFormPasswordTitle">Password</p>
+                    <>
+                        <input type={this.state.passShown?"text":"password"} name="pass" required
+                               value={this.state.pass}
+                               onChange={(ev)=>this.updateField(ev.target.name, ev.target.value)}
+                        />
+                        <FontAwesomeIcon id="loginEye" size="lg" icon={this.state.passShown? faEye:faEyeSlash} onClick={()=>{this.setPassShown()}}/>
+                    </>
                     <br/>
-                    <Button variant="primary" type="submit">Login</Button>
-                    <Button variant="secondary" type="reset">Reset</Button>
+                    <Button id="buttonLoginFormSubmit" variant="primary" type="submit">Login</Button>
+                    <Button id="buttonLoginFormReset" variant="secondary" type="reset">Reset</Button>
                     <br/>
                     {this.state.wrongLogin===true? <Alert variant="danger" id="wrongLogin">Wrong credentials</Alert> :""}
                 </div>
             </form>
-            </>;
+            <Link to="/"><Button id="buttonLoginReturn">Main page</Button></Link>
+        </div>;
     }
 }
 

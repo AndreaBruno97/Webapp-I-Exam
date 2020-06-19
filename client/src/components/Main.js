@@ -37,22 +37,26 @@ class Main extends React.Component {
             return <Redirect to={"/login"}/>;
 
         return <>
-            <Navbar bg="dark" variant="dark">
-                <Navbar.Brand >Car rental</Navbar.Brand>
-                <Nav.Link href="/login">Login</Nav.Link>
-                <Nav.Link href="/">Vehicle list</Nav.Link>
-                <Nav.Link href={this.state.id === -1 ? "/login" : "/newrental"}>New rental</Nav.Link>
-                <Nav.Link href={this.state.id === -1 ? "/login" : "/rentals"}>Rental list</Nav.Link>
-                <Button onClick={()=>{
-                    if(this.state.id === -1)
-                        this.props.handleErrors({status: 401});
-                    else
-                        api.logout()
-                            .then(this.setState({redirectedByLogout: true}))
-                            .catch((err)=>{this.props.handleErrors(err);});
-                }}>LOGOUT</Button>
+            <Navbar id="myNavbar" bg="dark" variant="dark">
+                <Navbar.Brand>Car rental</Navbar.Brand>
+                <Nav className="mr-auto">
+                    <Nav.Link href="/">Vehicle list</Nav.Link>
+                    <Nav.Link href={this.state.id === -1 ? "/login" : "/newrental"}>New rental</Nav.Link>
+                    <Nav.Link href={this.state.id === -1 ? "/login" : "/rentals"}>Rental list</Nav.Link>
+                </Nav>
+                <div id="navbarLogin">
+                    <div id="navbarUserName">{this.state.name?("Welcome, " + this.state.name):""}</div>
+                    <Nav.Link href="/login"><Button>Login</Button></Nav.Link>
+                    <Button onClick={()=>{
+                        if(this.state.id === -1)
+                            this.props.handleErrors({status: 401});
+                        else
+                            api.logout()
+                                .then(this.setState({redirectedByLogout: true}))
+                                .catch((err)=>{this.props.handleErrors(err);});
+                    }}>Logout</Button>
+                </div>
 
-                <Button>{this.state.name||"Unauthenticated"}</Button>
             </Navbar>
 
             <Router>

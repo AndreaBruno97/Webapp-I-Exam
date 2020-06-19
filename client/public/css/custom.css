@@ -1,0 +1,120 @@
+/*Navbar*/
+#myNavbar{
+    height: 10vh;
+}
+#navbarLogin > * {
+    display: inline-block;
+}
+
+#navbarUserName{
+    color: white;
+}
+
+.App{
+    width: 100vw;
+    height: 100vh;
+}
+
+/*Vehicle list*/
+#myAside{
+    padding-top: 2%;
+    text-align: center;
+    height: 90vh;
+    overflow-y: auto;
+    background-color: #cccccc;
+}
+
+#myAside p{
+   text-align: left;
+    padding-left: 10%;
+   font-size: 20px;
+}
+
+#brandsTitleInVehicle{
+    padding-top: 5%;
+}
+
+#myMain{
+    padding-top: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 2%;
+    height: 90vh;
+    overflow-y: auto;
+}
+#myMain h1{
+    margin-bottom: 2%;
+}
+
+/*Vehicle list: buttons*/
+#allCategoriesFilter{
+    margin-bottom: 1%;
+    width: 80%;
+}
+
+#allBrandsFilter{
+    margin-bottom: 1%;
+    width: 80%;
+}
+
+.brandFilterButton{
+    margin-top: 2%;
+    width: 39%;
+}
+
+.categoryFilterButton{
+    margin-top: 2%;
+    width: 39%;
+}
+
+.buttonList button:nth-child(odd){
+    margin-right: 2%;
+}
+
+/*Vehicle list: list*/
+#TitleRowVehicleList{
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    background-color: #cccccc;
+    font-weight: 500;
+}
+
+/*Login*/
+#loginContainer{
+    border: 2px solid #cccccc;
+    background-color: #eeeeee;
+    width: max-content;
+    position: relative;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%,-20%);
+
+    padding: 4%;
+}
+
+#loginContainer > *{
+    padding: 6px;
+}
+
+#LoginFormPasswordTitle{
+    margin-top: 5%;
+}
+
+#loginEye{
+    margin-left: 10px;
+}
+
+#buttonLoginFormSubmit{
+    margin-top: 5%;
+    width: 45%;
+    margin-right: 5%;
+}
+#buttonLoginFormReset{
+    margin-top: 5%;
+    width: 45%;
+    margin-left: 5%;
+}
+#buttonLoginReturn{
+     margin-top: 5%;
+     width: 100%;
+}
