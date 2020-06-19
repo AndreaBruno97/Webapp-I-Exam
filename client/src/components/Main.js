@@ -38,7 +38,7 @@ class Main extends React.Component {
 
         return <>
             <Navbar id="myNavbar" bg="dark" variant="dark">
-                <Navbar.Brand>Car rental</Navbar.Brand>
+                <Navbar.Brand id="navbarName">Car rental</Navbar.Brand>
                 <Nav className="mr-auto">
                     <Nav.Link href="/">Vehicle list</Nav.Link>
                     <Nav.Link href={this.state.id === -1 ? "/login" : "/newrental"}>New rental</Nav.Link>

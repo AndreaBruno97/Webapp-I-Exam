@@ -15,6 +15,9 @@
     height: 100vh;
 }
 
+#navbarName{
+    margin-right: 4%;
+}
 /*General alert message*/
 #alertMessageError{
     position: absolute;
@@ -142,4 +145,18 @@
 }
 #rentalListPage button{
     margin-bottom: 2px;
+}
+
+/*New rental page*/
+#newRentalContainer{
+    width: 100vw;
+    height: 90vh;
+    padding: 2%;
+}
+
+#newRentalContainer label{
+    width: 100%;
+}
+#newRentalContainer input{
+    width: 80%;
 }

@@ -4,6 +4,7 @@ import api from "./api";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import {Redirect} from 'react-router-dom' ;
+import {Col, Container, Row} from "react-bootstrap";
 
 class NewRental extends React.Component {
     constructor(props) {
@@ -237,100 +238,107 @@ class NewRental extends React.Component {
             return <Redirect to="/rentals"/>;
         }
         return <>
-            <h1>NEW RENTAL</h1>
-            <form onSubmit={(e)=> {
+            <Container id="newRentalContainer" fluid={true}>
+                <h1>NEW RENTAL</h1>
+                <form onSubmit={(e)=> {
                     e.preventDefault();
                     this.submitRental();
                 }
-            }>
+                }>
 
-                <label htmlFor="startDay">Start day</label>
-                <input type="date" name="startDay" min={moment().format("YYYY-MM-DD")} required
-                       value={this.state.startDay}
-                       onChange={(ev)=>this.updateField(ev.target.name, moment(ev.target.value).format("YYYY-MM-DD"))}
-                />
-                <br/>
+                <Row>
+                    <Col xs={12} sm={7}>
+                        <label htmlFor="startDay">Start day</label>
+                        <input type="date" name="startDay" min={moment().format("YYYY-MM-DD")} required
+                               value={this.state.startDay}
+                               onChange={(ev)=>this.updateField(ev.target.name, moment(ev.target.value).format("YYYY-MM-DD"))}
+                        />
+                        <br/>
 
-                <label htmlFor="endDay">End day</label>
-                <input type="date" name="endDay" min={this.state.startDay} required
-                       value={this.state.endDay}
-                       onChange={(ev)=>this.updateField(ev.target.name, moment(ev.target.value).format("YYYY-MM-DD"))}
-                />
-                <br/>
+                        <label htmlFor="endDay">End day</label>
+                        <input type="date" name="endDay" min={this.state.startDay} required
+                               value={this.state.endDay}
+                               onChange={(ev)=>this.updateField(ev.target.name, moment(ev.target.value).format("YYYY-MM-DD"))}
+                        />
+                        <br/>
 
-                <label htmlFor="carCategory">Car category</label>
-                <select name="carCategory" required
-                        value={this.state.carCategory}
-                       onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
-                >
-                    <option value="" hidden={true}> </option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                </select>
-                <br/>
+                        <label htmlFor="carCategory">Car category</label>
+                        <select name="carCategory" required
+                                value={this.state.carCategory}
+                               onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
+                        >
+                            <option value="" hidden={true}> </option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                        </select>
+                        <br/>
 
-                <label htmlFor="age">Driver's age</label>
-                <input type="number" name="age" min="0" required
-                       value={this.state.age}
-                       onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
-                />
-                <br/>
+                        <label htmlFor="age">Driver's age</label>
+                        <input type="number" name="age" min="0" required
+                               value={this.state.age}
+                               onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
+                        />
+                        <br/>
 
-                <label htmlFor="driversNumber">Number of extra drivers</label>
-                <input type="number" name="driversNumber" min="0" required
-                       value={this.state.driversNumber}
-                       onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
-                />
-                <br/>
+                        <label htmlFor="driversNumber">Number of extra drivers</label>
+                        <input type="number" name="driversNumber" min="0" required
+                               value={this.state.driversNumber}
+                               onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
+                        />
+                        <br/>
 
-                <label htmlFor="estimatedKm">Number of estimated km per day</label>
-                <input type="number" name="estimatedKm" min="0" required
-                       value={this.state.estimatedKm}
-                       onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
-                />
-                <br/>
+                        <label htmlFor="estimatedKm">Number of estimated km per day</label>
+                        <input type="number" name="estimatedKm" min="0" required
+                               value={this.state.estimatedKm}
+                               onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
+                        />
+                        <br/>
 
-                <label htmlFor="insurance">Extra insurance</label>
-                <input type="checkbox" name="insurance"
-                       checked ={this.state.insurance}
-                       onChange={(ev) => this.updateField(ev.target.name, ev.target.checked)}
-                />
-                <br/>
+                        <label htmlFor="insurance">Extra insurance</label>
+                        <input type="checkbox" name="insurance"
+                               checked ={this.state.insurance}
+                               onChange={(ev) => this.updateField(ev.target.name, ev.target.checked)}
+                        />
+                        <br/>
+                    </Col>
+                    <Col xs={12} sm={5}>
+                        <Alert variant="secondary">Cars available: {this.state.carsAvailable === undefined? "":`${this.state.carsAvailable}`}</Alert>
+                        <Alert variant="secondary">Price: {this.state.price === undefined? "": `${this.state.price}`}</Alert>
 
-                <Alert variant="secondary">Cars available: {this.state.carsAvailable === undefined? "":`${this.state.carsAvailable}`}</Alert>
-                <Alert variant="secondary">Price: {this.state.price === undefined? "": `${this.state.price}`}</Alert>
+                        <label htmlFor="fullName">Full name</label>
+                        <input type="text" name="fullName" required
+                               value={this.state.fullName}
+                               onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
+                        />
+                        <br/>
 
-                <label htmlFor="fullName">Full name</label>
-                <input type="text" name="fullName" required
-                       value={this.state.fullName}
-                       onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
-                />
-                <br/>
+                        <label htmlFor="cardNumber">Card number</label>
+                        <input type="text" name="cardNumber" required
+                               value={this.state.cardNumber}
+                               onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
+                        />
+                        <br/>
 
-                <label htmlFor="cardNumber">Card number</label>
-                <input type="text" name="cardNumber" required
-                       value={this.state.cardNumber}
-                       onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
-                />
-                <br/>
+                        <label htmlFor="cvv">CVV number</label>
+                        <input type="text" name="cvv" required
+                               value={this.state.cvv}
+                               onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
+                        />
+                        <br/>
 
-                <label htmlFor="cvv">CVV number</label>
-                <input type="text" name="cvv" required
-                       value={this.state.cvv}
-                       onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
-                />
-                <br/>
-
-                <Button variant="primary" type="submit">Submit</Button>
-                <Button variant="secondary" type="reset" onClick={()=>{this.resetState()}}>Reset</Button>
-                {this.state.wrongData===true? <Alert variant="danger">Wrong values</Alert> :""}
-                {this.state.correctSubmit===true? <Alert variant="primary">Submit successfully</Alert> :""}
-                {this.state.noCarsFlag===true? <Alert variant="danger">No cars available</Alert> :""}
+                        <Button variant="primary" type="submit">Submit</Button>
+                        <Button variant="secondary" type="reset" onClick={()=>{this.resetState()}}>Reset</Button>
+                        {this.state.wrongData===true? <Alert variant="danger">Wrong values</Alert> :""}
+                        {this.state.correctSubmit===true? <Alert variant="primary">Submit successfully</Alert> :""}
+                        {this.state.noCarsFlag===true? <Alert variant="danger">No cars available</Alert> :""}
+                    </Col>
+                </Row>
             </form>
-        </>;
+        </Container>
+    </>;
     }
 }
 
