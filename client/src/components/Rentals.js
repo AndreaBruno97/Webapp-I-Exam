@@ -46,12 +46,12 @@ class Rentals extends React.Component {
         if(this.props.idVal === -1){
             return <></>;
         }
-        return <>
+        return <div id="rentalListPage">
             <h1>RENTALS</h1>
             <Container fluid={true}>
                 <RentalsList rentals={this.state.rentals} removeRental={this.removeRental}/>
             </Container>
-        </>;
+        </div>;
     }
 }
 
@@ -63,13 +63,67 @@ class RentalsList extends React.Component {
         }
 
         return <div>
-            <>Future rentals</>
+            <p>Future rentals</p>
+            <Row className="TitleRow">
+                <Col>
+                    Start day
+                </Col>
+                <Col>
+                    End day
+                </Col>
+                <Col xs={1}>
+                    Category
+                </Col>
+                <Col xs={1}>
+                    Age
+                </Col>
+                <Col xs={2}>
+                    Number of drivers
+                </Col>
+                <Col xs={2}>
+                    Estimated km per day
+                </Col>
+                <Col xs={1}>
+                    Insurance
+                </Col>
+                <Col xs={1}>
+                    Price
+                </Col>
+                <Col xs={1}></Col>
+            </Row>
             {
                 this.props.rentals.map((e) =>
                     e.isHistory === false? <RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/> : "")
             }
 
-            <>Past rentals</>
+            <p>Past rentals</p>
+            <Row className="TitleRow">
+                <Col>
+                    Start day
+                </Col>
+                <Col>
+                    End day
+                </Col>
+                <Col xs={1}>
+                    Category
+                </Col>
+                <Col xs={1}>
+                    Age
+                </Col>
+                <Col xs={2}>
+                    Number of drivers
+                </Col>
+                <Col xs={2}>
+                    Estimated km per day
+                </Col>
+                <Col xs={1}>
+                    Insurance
+                </Col>
+                <Col xs={1}>
+                    Price
+                </Col>
+                <Col xs={1}></Col>
+            </Row>
             {
                 this.props.rentals.map((e) =>
                     e.isHistory === true? <RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/> : "")
@@ -91,35 +145,35 @@ class RentalElement extends React.Component {
             </Row>
         }
         return <Row>
-            <Col className="col-auto">
+            <Col>
                 {this.props.rental.startDay}
             </Col>
-            <Col className="col-auto">
+            <Col>
                 {this.props.rental.endDay}
             </Col>
-            <Col className="col-auto">
+            <Col xs={1}>
                 {this.props.rental.carCategory}
             </Col>
-            <Col className="col-auto">
+            <Col xs={1}>
                 {this.props.rental.age}
             </Col>
-            <Col className="col-auto">
+            <Col xs={2}>
                 {this.props.rental.driversNumber}
             </Col>
-            <Col className="col-auto">
+            <Col xs={2}>
                 {this.props.rental.estimatedKm}
             </Col>
-            <Col className="col-auto">
+            <Col xs={1}>
                 {this.props.rental.insurance? "Yes" : "No"}
             </Col>
-            <Col className="col-auto">
+            <Col xs={1}>
                 {this.props.rental.price}
             </Col>
+            <Col xs={1}>
             {this.props.rental.isHistory? "":
-                <Col className="col-auto">
-                    <Button onClick={()=>{this.props.removeRental(this.props.rental.id)}}><FontAwesomeIcon icon={faTrashAlt}/></Button>
-                </Col>
+                    <Button size="sm" onClick={()=>{this.props.removeRental(this.props.rental.id)}}><FontAwesomeIcon icon={faTrashAlt}/></Button>
             }
+            </Col>
         </Row>;
     }
 }

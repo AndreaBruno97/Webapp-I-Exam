@@ -15,6 +15,20 @@
     height: 100vh;
 }
 
+/*General alert message*/
+#alertMessageError{
+    position: absolute;
+    left: 50%;
+    top: 90%;
+    transform: translate(-50%, -90%);
+}
+
+/*Error in login*/
+#wrongLogin{
+    margin-top: 5%;
+    text-align: center;
+}
+
 /*Vehicle list*/
 #myAside{
     padding-top: 2%;
@@ -72,7 +86,7 @@
 }
 
 /*Vehicle list: list*/
-#TitleRowVehicleList{
+.TitleRow{
     padding-top: 0.5%;
     padding-bottom: 0.5%;
     background-color: #cccccc;
@@ -113,4 +127,19 @@
 #buttonLoginReturn{
      margin-top: 5%;
      width: 100%;
+}
+
+/*Rental list*/
+#rentalListPage{
+    padding: 2%;
+}
+
+#rentalListPage p{
+    padding-top: 2%;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 500;
+}
+#rentalListPage button{
+    margin-bottom: 2px;
 }

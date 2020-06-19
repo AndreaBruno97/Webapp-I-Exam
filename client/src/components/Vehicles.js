@@ -132,7 +132,7 @@ class Vehicles extends React.Component {
                         <h1>VEHICLES</h1>
                         {/* Content */}
                         <Container fluid={true}>
-                            <Row id="TitleRowVehicleList">
+                            <Row className="TitleRow">
                                 <Col xs={2}>
                                     Category
                                 </Col>

@@ -79,7 +79,7 @@ class Main extends React.Component {
             </Router>
 
             {this.props.serverError !== undefined?
-                <Alert variant="warning">{this.props.serverError}</Alert>
+                <Alert id="alertMessageError" variant="warning">{this.props.serverError}</Alert>
             :
             ""}
 
