@@ -246,18 +246,21 @@ class NewRental extends React.Component {
 
                 <label htmlFor="startDay">Start day</label>
                 <input type="date" name="startDay" min={moment().format("YYYY-MM-DD")} required
+                       value={this.state.startDay}
                        onChange={(ev)=>this.updateField(ev.target.name, moment(ev.target.value).format("YYYY-MM-DD"))}
                 />
                 <br/>
 
                 <label htmlFor="endDay">End day</label>
                 <input type="date" name="endDay" min={this.state.startDay} required
+                       value={this.state.endDay}
                        onChange={(ev)=>this.updateField(ev.target.name, moment(ev.target.value).format("YYYY-MM-DD"))}
                 />
                 <br/>
 
                 <label htmlFor="carCategory">Car category</label>
                 <select name="carCategory" required
+                        value={this.state.carCategory}
                        onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
                 >
                     <option value="" hidden={true}> </option>
@@ -271,24 +274,28 @@ class NewRental extends React.Component {
 
                 <label htmlFor="age">Driver's age</label>
                 <input type="number" name="age" min="0" required
+                       value={this.state.age}
                        onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
                 />
                 <br/>
 
                 <label htmlFor="driversNumber">Number of extra drivers</label>
                 <input type="number" name="driversNumber" min="0" required
+                       value={this.state.driversNumber}
                        onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
                 />
                 <br/>
 
                 <label htmlFor="estimatedKm">Number of estimated km per day</label>
                 <input type="number" name="estimatedKm" min="0" required
+                       value={this.state.estimatedKm}
                        onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
                 />
                 <br/>
 
                 <label htmlFor="insurance">Extra insurance</label>
                 <input type="checkbox" name="insurance"
+                       checked ={this.state.insurance}
                        onChange={(ev) => this.updateField(ev.target.name, ev.target.checked)}
                 />
                 <br/>
@@ -298,18 +305,21 @@ class NewRental extends React.Component {
 
                 <label htmlFor="fullName">Full name</label>
                 <input type="text" name="fullName" required
+                       value={this.state.fullName}
                        onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
                 />
                 <br/>
 
                 <label htmlFor="cardNumber">Card number</label>
                 <input type="text" name="cardNumber" required
+                       value={this.state.cardNumber}
                        onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
                 />
                 <br/>
 
                 <label htmlFor="cvv">CVV number</label>
                 <input type="text" name="cvv" required
+                       value={this.state.cvv}
                        onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
                 />
                 <br/>
