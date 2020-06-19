@@ -92,10 +92,6 @@
     padding: 4%;
 }
 
-#loginContainer > *{
-    padding: 6px;
-}
-
 #LoginFormPasswordTitle{
     margin-top: 5%;
 }
