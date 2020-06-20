@@ -262,8 +262,8 @@ class NewRental extends React.Component {
                         />
                         <br/>
 
-                        <label htmlFor="carCategory">Car category</label>
-                        <select name="carCategory" required
+                        <label id="carCategoryFormLabel" htmlFor="carCategory">Car category</label>
+                        <select id="carCategoryFormInput" name="carCategory" required
                                 value={this.state.carCategory}
                                onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
                         >
@@ -297,16 +297,16 @@ class NewRental extends React.Component {
                         />
                         <br/>
 
-                        <label htmlFor="insurance">Extra insurance</label>
-                        <input type="checkbox" name="insurance"
+                        <label id="insuranceFormLabel" htmlFor="insurance">Extra insurance</label>
+                        <input id="insuranceFormInput" type="checkbox" name="insurance"
                                checked ={this.state.insurance}
                                onChange={(ev) => this.updateField(ev.target.name, ev.target.checked)}
                         />
                         <br/>
                     </Col>
                     <Col xs={12} sm={5}>
-                        <Alert variant="secondary">Cars available: {this.state.carsAvailable === undefined? "":`${this.state.carsAvailable}`}</Alert>
-                        <Alert variant="secondary">Price: {this.state.price === undefined? "": `${this.state.price}`}</Alert>
+                        <Alert className="alertNewRental" variant="secondary">Cars available: {this.state.carsAvailable === undefined? "":`${this.state.carsAvailable}`}</Alert>
+                        <Alert className="alertNewRental" variant="secondary">Price: {this.state.price === undefined? "": `${this.state.price}`}</Alert>
 
                         <label htmlFor="fullName">Full name</label>
                         <input type="text" name="fullName" required
@@ -329,8 +329,8 @@ class NewRental extends React.Component {
                         />
                         <br/>
 
-                        <Button variant="primary" type="submit">Submit</Button>
-                        <Button variant="secondary" type="reset" onClick={()=>{this.resetState()}}>Reset</Button>
+                        <Button id="buttonNewRentalSubmit" variant="primary" type="submit">Submit</Button>
+                        <Button id="buttonNewRentalReset" variant="secondary" type="reset" onClick={()=>{this.resetState()}}>Reset</Button>
                         {this.state.wrongData===true? <Alert variant="danger">Wrong values</Alert> :""}
                         {this.state.correctSubmit===true? <Alert variant="primary">Submit successfully</Alert> :""}
                         {this.state.noCarsFlag===true? <Alert variant="danger">No cars available</Alert> :""}

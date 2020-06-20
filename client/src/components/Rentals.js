@@ -64,71 +64,51 @@ class RentalsList extends React.Component {
 
         return <div>
             <p>Future rentals</p>
-            <Row className="TitleRow">
-                <Col>
-                    Start day
-                </Col>
-                <Col>
-                    End day
-                </Col>
-                <Col xs={1}>
-                    Category
-                </Col>
-                <Col xs={1}>
-                    Age
-                </Col>
-                <Col xs={2}>
-                    Number of drivers
-                </Col>
-                <Col xs={2}>
-                    Estimated km per day
-                </Col>
-                <Col xs={1}>
-                    Insurance
-                </Col>
-                <Col xs={1}>
-                    Price
-                </Col>
-                <Col xs={1}></Col>
-            </Row>
+            <RentalListTitle/>
             {
                 this.props.rentals.map((e) =>
                     e.isHistory === false? <RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/> : "")
             }
 
             <p>Past rentals</p>
-            <Row className="TitleRow">
-                <Col>
-                    Start day
-                </Col>
-                <Col>
-                    End day
-                </Col>
-                <Col xs={1}>
-                    Category
-                </Col>
-                <Col xs={1}>
-                    Age
-                </Col>
-                <Col xs={2}>
-                    Number of drivers
-                </Col>
-                <Col xs={2}>
-                    Estimated km per day
-                </Col>
-                <Col xs={1}>
-                    Insurance
-                </Col>
-                <Col xs={1}>
-                    Price
-                </Col>
-                <Col xs={1}></Col>
-            </Row>
+            <RentalListTitle/>
             {
                 this.props.rentals.map((e) =>
                     e.isHistory === true? <RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/> : "")
             }
         </div>;
+    }
+}
+
+class RentalListTitle extends React.Component{
+    render() {
+        return <Row className="TitleRow">
+            <Col>
+                Start day
+            </Col>
+            <Col>
+                End day
+            </Col>
+            <Col xs={1}>
+                Category
+            </Col>
+            <Col xs={1}>
+                Age
+            </Col>
+            <Col xs={2}>
+                Number of drivers
+            </Col>
+            <Col xs={2}>
+                Estimated km per day
+            </Col>
+            <Col xs={1}>
+                Insurance
+            </Col>
+            <Col xs={1}>
+                Price
+            </Col>
+            <Col xs={1}> </Col>
+        </Row>;
     }
 }
 

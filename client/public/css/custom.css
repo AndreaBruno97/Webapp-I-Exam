@@ -156,7 +156,29 @@
 
 #newRentalContainer label{
     width: 100%;
+    margin-top: 3%;
 }
-#newRentalContainer input{
+
+#newRentalContainer input, .alertNewRental{
     width: 80%;
+}
+
+#carCategoryFormLabel, #insuranceFormLabel{
+    width: 30%!important;
+}
+
+#insuranceFormInput{
+    width: auto!important;
+}
+
+#buttonNewRentalSubmit{
+    width: 38%;
+    margin-top: 3%;
+    margin-right: 2%;
+}
+
+#buttonNewRentalReset{
+    width: 38%;
+    margin-top: 3%;
+    margin-left: 2%;
 }

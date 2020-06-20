@@ -29,6 +29,17 @@ class Login extends React.Component{
         });
     };
 
+
+    resetFormState = () =>{
+        this.setState((state)=> {
+            return  {
+                user: "",
+                pass: "",
+                wrongLogin: false
+            };
+        });
+    };
+
     render() {
         if (this.state.redirected === true)
             return <Redirect to="/" />;
@@ -63,7 +74,8 @@ class Login extends React.Component{
                     </>
                     <br/>
                     <Button id="buttonLoginFormSubmit" variant="primary" type="submit">Login</Button>
-                    <Button id="buttonLoginFormReset" variant="secondary" type="reset">Reset</Button>
+                    <Button id="buttonLoginFormReset" variant="secondary" type="reset"
+                        onClick={()=>{this.resetFormState()}}>Reset</Button>
                     <br/>
                     {this.state.wrongLogin===true? <Alert variant="danger" id="wrongLogin">Wrong credentials</Alert> :""}
                 </div>
