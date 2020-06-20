@@ -201,7 +201,7 @@ class NewRental extends React.Component {
 
     componentDidMount() {
         api.getPastRentalsNumber()
-            .then((res)=>{this.setState({isFrequent: res >3})})
+            .then((res)=>{this.setState({isFrequent: res >=3})})
             .catch((err)=>{this.props.handleErrors(err);});
     }
 

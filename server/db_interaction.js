@@ -214,7 +214,7 @@ exports.getPrice = function (id, category, startDay, endDay, estimatedkm, age, d
                     tmpPrice *= 1.1;
                 this.getPastRentalsNumber(id)
                     .then((res)=>{
-                        if(res.num > 3)
+                        if(res.num >= 3)
                             tmpPrice *= 0.9;
 
                         let startMoment = moment(startDay);
