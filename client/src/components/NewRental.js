@@ -202,7 +202,7 @@ class NewRental extends React.Component {
     componentDidMount() {
         api.getPastRentalsNumber()
             .then((res)=>{this.setState({isFrequent: res >3})})
-            .catch((err)=>{this.props.handleError(err);});
+            .catch((err)=>{this.props.handleErrors(err);});
     }
 
     resetState = () =>{
@@ -247,8 +247,9 @@ class NewRental extends React.Component {
                 }>
 
                 <Row>
-                    <Col xs={12} sm={7}>
+                    <Col id="leftNewRental" xs={12} sm={7}>
                         <label htmlFor="startDay">Start day</label>
+                        <br/>
                         <input type="date" name="startDay" min={moment().format("YYYY-MM-DD")} required
                                value={this.state.startDay}
                                onChange={(ev)=>this.updateField(ev.target.name, moment(ev.target.value).format("YYYY-MM-DD"))}
@@ -256,6 +257,7 @@ class NewRental extends React.Component {
                         <br/>
 
                         <label htmlFor="endDay">End day</label>
+                        <br/>
                         <input type="date" name="endDay" min={this.state.startDay} required
                                value={this.state.endDay}
                                onChange={(ev)=>this.updateField(ev.target.name, moment(ev.target.value).format("YYYY-MM-DD"))}
@@ -277,6 +279,7 @@ class NewRental extends React.Component {
                         <br/>
 
                         <label htmlFor="age">Driver's age</label>
+                        <br/>
                         <input type="number" name="age" min="0" required
                                value={this.state.age}
                                onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
@@ -284,6 +287,7 @@ class NewRental extends React.Component {
                         <br/>
 
                         <label htmlFor="driversNumber">Number of extra drivers</label>
+                        <br/>
                         <input type="number" name="driversNumber" min="0" required
                                value={this.state.driversNumber}
                                onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
@@ -291,6 +295,7 @@ class NewRental extends React.Component {
                         <br/>
 
                         <label htmlFor="estimatedKm">Number of estimated km per day</label>
+                        <br/>
                         <input type="number" name="estimatedKm" min="0" required
                                value={this.state.estimatedKm}
                                onChange={(ev) => this.updateField(ev.target.name, Number(ev.target.value))}
@@ -304,11 +309,12 @@ class NewRental extends React.Component {
                         />
                         <br/>
                     </Col>
-                    <Col xs={12} sm={5}>
+                    <Col id="rightNewRental" xs={12} sm={5}>
                         <Alert className="alertNewRental" variant="secondary">Cars available: {this.state.carsAvailable === undefined? "":`${this.state.carsAvailable}`}</Alert>
                         <Alert className="alertNewRental" variant="secondary">Price: {this.state.price === undefined? "": `${this.state.price}`}</Alert>
 
                         <label htmlFor="fullName">Full name</label>
+                        <br/>
                         <input type="text" name="fullName" required
                                value={this.state.fullName}
                                onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
@@ -316,6 +322,7 @@ class NewRental extends React.Component {
                         <br/>
 
                         <label htmlFor="cardNumber">Card number</label>
+                        <br/>
                         <input type="text" name="cardNumber" required
                                value={this.state.cardNumber}
                                onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
@@ -323,6 +330,7 @@ class NewRental extends React.Component {
                         <br/>
 
                         <label htmlFor="cvv">CVV number</label>
+                        <br/>
                         <input type="text" name="cvv" required
                                value={this.state.cvv}
                                onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}
@@ -331,9 +339,9 @@ class NewRental extends React.Component {
 
                         <Button id="buttonNewRentalSubmit" variant="primary" type="submit">Submit</Button>
                         <Button id="buttonNewRentalReset" variant="secondary" type="reset" onClick={()=>{this.resetState()}}>Reset</Button>
-                        {this.state.wrongData===true? <Alert variant="danger">Wrong values</Alert> :""}
-                        {this.state.correctSubmit===true? <Alert variant="primary">Submit successfully</Alert> :""}
-                        {this.state.noCarsFlag===true? <Alert variant="danger">No cars available</Alert> :""}
+                        {this.state.wrongData===true? <Alert className="alertNewRental" variant="danger">Wrong values</Alert> :""}
+                        {this.state.correctSubmit===true? <Alert className="alertNewRental" variant="primary">Submit successfully</Alert> :""}
+                        {this.state.noCarsFlag===true? <Alert className="alertNewRental" variant="danger">No cars available</Alert> :""}
                     </Col>
                 </Row>
             </form>

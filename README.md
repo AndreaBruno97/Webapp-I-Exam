@@ -107,6 +107,7 @@ Given rental information, accepts a new rental for an authenticated user
         - `BrandElement` (in `Vehicles.js`): Single button for brand filters
     - `Rentals` (in `Rentals.js`): Shows the list of past and future rentals of the authenticated user, and lets him delete future ones
       - `RentalsList` (in `Rentals.js`): List of rentals (internally divides past and future ones)
+        - `RentalListTitle` (in `Rentals.js`): Title for the lists of past and future rentals
         - `RentalElement` (in `Rentals.js`): Single rental
           - `TemporaryElement` (in `Rentals.js`): When a rental is deleted by the user, this stub element is rendered until the data is re-fetched from the server
     - `NewRental` (in `NewRental.js`): Page with the form that handles the creation of a new rental

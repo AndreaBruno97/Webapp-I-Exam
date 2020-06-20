@@ -47,7 +47,7 @@ class Main extends React.Component {
                 <div id="navbarLogin">
                     <div id="navbarUserName">{this.state.name?("Welcome, " + this.state.name):""}</div>
                     <Nav.Link href="/login"><Button>Login</Button></Nav.Link>
-                    <Button onClick={()=>{
+                    <Button id="logoutButton" onClick={()=>{
                         if(this.state.id === -1)
                             this.props.handleErrors({status: 401});
                         else
