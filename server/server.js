@@ -34,7 +34,7 @@ app.get('/api/vehicles', (req, res) => {
 
 // POST /api/login {username: , password: }
 // Login from username and password
-const expireTime = 60*60*24*7;//Seconds
+const expireTime = 60*60;//Seconds
 app.post("/api/login", [check('username').notEmpty(), check('password').notEmpty()],
     (req, res)=>{
         let flag = 1;

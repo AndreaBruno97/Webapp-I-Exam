@@ -52,19 +52,15 @@ class NewRental extends React.Component {
                             this.setState({percentageOccupied: res.perc, carsAvailable: res.free});
                             tmpState["percentageOccupied"] = res.perc;
                             tmpState["carsAvailable"] = res.free;
-                            //return tmpState;
+
                             // Re-compute the price, if needed
                             if(this.inputErrors(tmpState) === false && tmpState.carsAvailable > 0){
                                 // The input is valid
                                 let newPrice = this.computePrice(tmpState);
                                 this.setState({price: newPrice});
-                                //tmpState["price"] = newPrice;
-                                //return tmpState;
                             }else {
                                 // The input is not valid
                                 this.setState({price: undefined});
-                                //tmpState["price"] = undefined;
-                                //return tmpState;
                             }
                         }
 
@@ -79,13 +75,9 @@ class NewRental extends React.Component {
                 // The input is valid
                 let newPrice = this.computePrice(tmpState);
                 this.setState({price: newPrice});
-                //tmpState["price"] = newPrice;
-                //return tmpState;
             }else {
                 // The input is not valid
                 this.setState({price: undefined});
-                //tmpState["price"] = undefined;
-                //return tmpState;
             }
         }
     };
@@ -93,8 +85,7 @@ class NewRental extends React.Component {
     computePrice = (state) =>{
         // Don't show price if there are no cars available
         if(state.carsAvailable === 0){
-            this.setState({price: undefined});
-            return
+            return undefined;
         }
 
         let tmpPrice = 0;
@@ -105,8 +96,7 @@ class NewRental extends React.Component {
             case "D": tmpPrice = 50; break;
             case "E": tmpPrice = 40; break;
             default:
-                this.setState({price: undefined});
-                return
+                return undefined;
         }
 
         if(state.estimatedKm < 50)
@@ -132,7 +122,7 @@ class NewRental extends React.Component {
         let endMoment = moment(state.endDay);
         let numberOfDays = endMoment.diff(startMoment, 'days') + 1;
         tmpPrice *= numberOfDays;
-        //this.setState({price: tmpPrice.toFixed(2)});
+
         return tmpPrice.toFixed(2);
     };
 

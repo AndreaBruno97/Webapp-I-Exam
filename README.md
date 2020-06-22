@@ -113,9 +113,8 @@ Given rental information, accepts a new rental for an authenticated user
     - `NewRental` (in `NewRental.js`): Page with the form that handles the creation of a new rental
 
 ## Screenshot
-<!---
-![Configurator Screenshot](./img/screenshot.jpg)
--->
+
+![Configurator Screenshot](./images_README/newrental.png)
 
 ## Test users
 
