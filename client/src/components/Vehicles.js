@@ -162,7 +162,7 @@ class CategoriesList extends React.Component {
             list.push(e);
 
         return <div>
-            <Button id="allCategoriesFilter" onClick={()=>this.props.allFilters()} active={this.props.allCategoriesActive}>All categories</Button>
+            <Button variant="outline-primary" id="allCategoriesFilter" onClick={()=>this.props.allFilters()} active={this.props.allCategoriesActive}>All categories</Button>
             <div className="buttonList">
                 {
                     list.map((e)=>
@@ -176,7 +176,7 @@ class CategoriesList extends React.Component {
 class CategoryElement extends React.Component {
     render() {
         let activeFlag = this.props.allActive? false : this.props.flag;
-        return <Button className="categoryFilterButton" onClick={()=>this.props.toggle(this.props.category, "category")} active={activeFlag}>{this.props.category}</Button>
+        return <Button variant="outline-primary" className="categoryFilterButton" onClick={()=>this.props.toggle(this.props.category, "category")} active={activeFlag}>{this.props.category}</Button>
     }
 }
 
@@ -187,7 +187,7 @@ class BrandsList extends React.Component {
             list.push(e);
 
         return <div>
-            <Button id="allBrandsFilter" onClick={()=>this.props.allFilters()}  active={this.props.allBrandsActive}>All brands</Button>
+            <Button variant="outline-primary" id="allBrandsFilter" onClick={()=>this.props.allFilters()}  active={this.props.allBrandsActive}>All brands</Button>
             <div className="buttonList">
                 {
                     list.map((e)=>
@@ -202,7 +202,7 @@ class BrandsList extends React.Component {
 class BrandElement extends React.Component {
     render() {
         let activeFlag = this.props.allActive? false : this.props.flag;
-        return <Button className="brandFilterButton" onClick={()=>this.props.toggle(this.props.brand, "brand")} active={activeFlag}>{this.props.brand}</Button>
+        return <Button variant="outline-primary" className="brandFilterButton" onClick={()=>this.props.toggle(this.props.brand, "brand")} active={activeFlag}>{this.props.brand}</Button>
     }
 }
 

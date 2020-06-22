@@ -310,8 +310,8 @@ class NewRental extends React.Component {
                         <br/>
                     </Col>
                     <Col id="rightNewRental" xs={12} sm={5}>
-                        <Alert className="alertNewRental" variant="secondary">Cars available: {this.state.carsAvailable === undefined? "":`${this.state.carsAvailable}`}</Alert>
-                        <Alert className="alertNewRental" variant="secondary">Price: {this.state.price === undefined? "": `${this.state.price}`}</Alert>
+                        <Alert className="alertNewRental" variant="secondary">Cars available: {this.state.carsAvailable === undefined? "":<b>{`${this.state.carsAvailable}`}</b>}</Alert>
+                        <Alert className="alertNewRental" variant="secondary">Price: {this.state.price === undefined? "": <b>{`${this.state.price} €`}</b>}</Alert>
 
                         <label htmlFor="fullName">Full name</label>
                         <br/>

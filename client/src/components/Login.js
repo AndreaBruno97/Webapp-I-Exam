@@ -80,7 +80,7 @@ class Login extends React.Component{
                     {this.state.wrongLogin===true? <Alert variant="danger" id="wrongLogin">Wrong credentials</Alert> :""}
                 </div>
             </form>
-            <Link to="/"><Button id="buttonLoginReturn">Main page</Button></Link>
+            <Link to="/"><Button variant="outline-primary" id="buttonLoginReturn">Main page</Button></Link>
         </div>;
     }
 }

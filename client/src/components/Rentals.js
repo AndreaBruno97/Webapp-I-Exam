@@ -151,7 +151,7 @@ class RentalElement extends React.Component {
             </Col>
             <Col xs={1}>
             {this.props.rental.isHistory? "":
-                    <Button size="sm" onClick={()=>{this.props.removeRental(this.props.rental.id)}}><FontAwesomeIcon icon={faTrashAlt}/></Button>
+                    <Button variant="danger" size="sm" onClick={()=>{this.props.removeRental(this.props.rental.id)}}><FontAwesomeIcon icon={faTrashAlt}/></Button>
             }
             </Col>
         </Row>;
