@@ -222,7 +222,6 @@ exports.getPrice = function (id, category, startDay, endDay, estimatedkm, age, d
                         let numberOfDays = endMoment.diff(startMoment, 'days') + 1;
                         tmpPrice *= numberOfDays;
 
-                        console.log([id, category, startDay, endDay, estimatedkm, age, drivers, insurance, perc, free, res.num])
                         resolve(Math.round(100*(tmpPrice.toFixed(2))));
                     })
                     .catch((err) => {
