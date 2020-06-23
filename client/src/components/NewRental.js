@@ -43,41 +43,44 @@ class NewRental extends React.Component {
 
         // Check if the number of available cars needs to be updated
         // I'm changing dates or category
-        let parametersAreChanging = ["startDay", "endDay", "carCategory"].includes(name);
-        if(parametersAreChanging && isDifferent){
-            if(this.carErrors(tmpState) === false){
-                // The input is valid
-                api.getOccupiedPercentage(tmpState.carCategory, tmpState.startDay, tmpState.endDay)
-                    .then((res)=>{
-                            this.setState({percentageOccupied: res.perc, carsAvailable: res.free});
-                            tmpState["percentageOccupied"] = res.perc;
-                            tmpState["carsAvailable"] = res.free;
+        if(["startDay", "endDay", "carCategory"].includes(name)){
+            //Update the price after asking to the server information about the number of cars
+            if(isDifferent){
+                if(this.carErrors(tmpState) === false){
+                    // The input is valid
+                    api.getOccupiedPercentage(tmpState.carCategory, tmpState.startDay, tmpState.endDay)
+                        .then((res)=>{
+                                this.setState({percentageOccupied: res.perc, carsAvailable: res.free});
+                                tmpState["percentageOccupied"] = res.perc;
+                                tmpState["carsAvailable"] = res.free;
 
-                            // Re-compute the price, if needed
-                            if(this.inputErrors(tmpState) === false && tmpState.carsAvailable > 0){
-                                // The input is valid
-                                let newPrice = this.computePrice(tmpState);
-                                this.setState({price: newPrice});
-                            }else {
-                                // The input is not valid
-                                this.setState({price: undefined});
+                                // Re-compute the price, if needed
+                                if(this.inputErrors(tmpState) === false && tmpState.carsAvailable > 0){
+                                    // The input is valid
+                                    let newPrice = this.computePrice(tmpState);
+                                    this.setState({price: newPrice});
+                                }else {
+                                    // The input is not valid
+                                    this.setState({price: undefined});
+                                }
                             }
-                        }
 
-                    )
-                    .catch((err)=>{this.props.handleErrors(err)})
+                        )
+                        .catch((err)=>{this.props.handleErrors(err)})
+                }
+                else this.setState({price: undefined, percentageOccupied: undefined, carsAvailable: undefined});
             }
-        }
-
-        // Check if the price needs to be updated
-        if(isDifferent){
-            if(this.inputErrors(tmpState) === false && tmpState.carsAvailable > 0){
-                // The input is valid
-                let newPrice = this.computePrice(tmpState);
-                this.setState({price: newPrice});
-            }else {
-                // The input is not valid
-                this.setState({price: undefined});
+        }else{
+            //Update the price with the previous information about the numebr of cars
+            if(isDifferent){
+                if(this.inputErrors(tmpState) === false && tmpState.carsAvailable > 0){
+                    // The input is valid
+                    let newPrice = this.computePrice(tmpState);
+                    this.setState({price: newPrice});
+                }else {
+                    // The input is not valid
+                    this.setState({price: undefined});
+                }
             }
         }
     };
@@ -211,7 +214,6 @@ class NewRental extends React.Component {
             carsAvailable: undefined,
             price: undefined,
             percentageOccupied: undefined,
-            isFrequent: false,
 
             wrongData: false,
             correctSubmit: false,
