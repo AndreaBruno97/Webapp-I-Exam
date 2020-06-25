@@ -57,24 +57,25 @@ class Rentals extends React.Component {
 
 class RentalsList extends React.Component {
     render() {
-
-        if(this.props.rentals.length === 0){
-            return <div>No rentals</div>;
-        }
-
+        let futureRentals = this.props.rentals.filter((e)=>e.isHistory === false);
+        let pastRentals = this.props.rentals.filter((e)=>e.isHistory === true);
         return <div>
             <p>Future rentals</p>
             <RentalListTitle/>
             {
-                this.props.rentals.map((e) =>
-                    e.isHistory === false? <RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/> : "")
+                futureRentals.length === 0?
+                    <div>No future rentals</div>
+                    :
+                    futureRentals.map((e) =><RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/>)
             }
 
             <p>Past rentals</p>
             <RentalListTitle/>
             {
-                this.props.rentals.map((e) =>
-                    e.isHistory === true? <RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/> : "")
+                pastRentals.length === 0?
+                    <div>No past rentals</div>
+                    :
+                    pastRentals.map((e) =><RentalElement key={e.id} rental={e} removeRental={this.props.removeRental}/>)
             }
         </div>;
     }
